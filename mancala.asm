@@ -8,10 +8,13 @@
     titulo_jogador_2: .asciz "Jogador 2"
     texto_jogador_1: .asciz "Escolha a cavidade [0-5]"
     texto_jogador_2: .asciz "Escolha a cavidade [7-12]"
+    
 .text 
     start:
-    
+
         
+
+    # FUNÇÕES DE JOGADA 
 
     player_one_turn:
         # é o jogador 1 que vai jogar
