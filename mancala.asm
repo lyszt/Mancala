@@ -9,6 +9,42 @@
     texto_jogador_1: .asciz "Escolha a cavidade [0-5]"
     texto_jogador_2: .asciz "Escolha a cavidade [7-12]"
     
+
+    # What if I used those?
+    # Macro pra salvar os registradores sem
+    # eu precisar digita tudo isso
+
+    # . macro cria pseudoinstruções
+    
+        .macro save_registers
+        addi sp, sp, -16
+        sw ra, 12(sp)
+        sw s0, 8(sp)
+        sw s1, 4(sp)
+        sw s2, 0(sp)
+    .endm
+
+    # idem, restora os registradores pro inicio
+    .macro return_registers
+        lw ra, 12(sp)
+        lw s0, 8(sp)
+        lw s1, 4(sp)
+        lw s2, 0(sp)
+        addi sp, sp, 16
+    .endm
+
+    # macro
+    .macro function name 
+        .global \name
+        \name:
+        save_registers
+    .endm
+
+    .macro end
+    return_registers
+    ret
+    .endm  
+
 .text 
     start:
 
