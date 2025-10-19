@@ -49,6 +49,11 @@
     start:
 
         
+    # Funções uteis
+    func get_value:
+        li a7, 5
+        ecall 
+    end
 
     # FUNÇÕES DE JOGADA 
     
@@ -80,21 +85,17 @@
         la a0, textos_jogador_1
         li a1, 2
         jal ra, print
-        j cavidade_get_value
+        jal ra, get_value
+        ret
 
     cavidade_choice_player_2:
         la a0, textos_jogador_2
         li a1, 2
         jal ra, print
-        j cavidade_get_value
+        jal ra, get_value
+        ret
 
-    cavidade_get_value:
-        # Colocou o ra de volta no lugar
-        lw ra, 12(sp)
-        addi sp, sp, 16
-        li a7, 5
-        ecall 
-        
+   
 
 
 
@@ -120,7 +121,7 @@
         
         j print_loop
     print_end:
-        addi x0, x0, x0
+        ret
 
 
     textos_jogador_1:
