@@ -48,6 +48,10 @@ texto_jogador_2:
     .asciz     "Escolha a cavidade [7-12]"
 
 # Textos do tabuleiro
+titulo_acima_jogador_1:
+    .asciz     "                          0 <-- JOGADOR 1   5                          \n"
+titulo_acima_jogador_2:
+    .asciz     "                         12 <-- JOGADOR 2   7                          \n"
 linha_horizontal:
     .asciz     "+----+----+----+----+----+----+----+----+----+----+----+----+----+----+\n"
 linha_horizontal_meio:
@@ -145,6 +149,7 @@ print_end:
 
 mostra_tabuleiro:
     startF
+    call print_titulo_jogador_2
     call       print_horizontal_line
     
     # Linha do Jogador 1 (topo)
@@ -166,6 +171,7 @@ mostra_tabuleiro:
     call       print_quebra_linha
 
     call       print_horizontal_line
+    call print_titulo_jogador_1
     endF
     ret
 
@@ -233,6 +239,21 @@ print_quebra_linha:
 print_horizontal_line:
     startF
     la         a0, linha_horizontal
+    call       print_one_string
+    endF
+    ret
+
+print_titulo_jogador_1:
+    startF
+    la         a0, titulo_acima_jogador_1
+    call       print_one_string
+    endF
+    ret
+
+
+print_titulo_jogador_2:
+    startF
+    la         a0, titulo_acima_jogador_2
     call       print_one_string
     endF
     ret

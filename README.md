@@ -1,7 +1,7 @@
 ### Trabalho de Organização de Computadores - Mancala
 
-![Imagem do jogo nos estágios iniciais](image-2.png)
-> Imagem do jogo nos estágios iniciais
+![Imagem do tabuleiro](image-3.png)> 
+Imagem do jogo em ASM Risc V
 
 Este trabalho foi feito para a disciplina de Organização de Computadores na Universidade Federal da Fronteira Sul no semestre **2025.2**.
 
