@@ -1,6 +1,7 @@
 ### Trabalho de Organização de Computadores - Mancala
 
-![Imagem do jogo como foi apresentado nos estágios iniciais](image-1.png)
+![Imagem do jogo nos estágios iniciais](image-2.png)
+> Imagem do jogo nos estágios iniciais
 
 Este trabalho foi feito para a disciplina de Organização de Computadores na Universidade Federal da Fronteira Sul no semestre **2025.2**.
 
