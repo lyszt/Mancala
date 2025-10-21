@@ -49,11 +49,11 @@ texto_jogador_2:
 
 # Textos do tabuleiro
 linha_horizontal:
-    .asciz     "+----+----+----+----+----+----+----+----+----+----+\n"
+    .asciz     "+----+----+----+----+----+----+----+----+----+----+----+----+----+----+\n"
 linha_horizontal_meio:
-    .asciz     "----+----+----+----+----+----+-----+"
+    .asciz     "----+----+----+----+----+----+----+----+----+----+---+"
 quadrado_vazio:
-    .asciz     "|   |"
+    .asciz     "|       |"
 quadrado_esquerda:
     .asciz     "|   "
 quadrado_direita:
@@ -149,7 +149,9 @@ mostra_tabuleiro:
     
     # Linha do Jogador 1 (topo)
     li         a1, 0
+    call print_quadrado_vazio
     call       print_valores_linha
+    call print_quadrado_vazio
     call       print_quebra_linha
 
     # Linha do Meio com as cavidades laterais
@@ -157,8 +159,10 @@ mostra_tabuleiro:
     call       print_quebra_linha
 
     # Linha do Jogador 2 (base)
+    call print_quadrado_vazio
     li         a1, 1
     call       print_valores_linha
+    call print_quadrado_vazio
     call       print_quebra_linha
 
     call       print_horizontal_line
