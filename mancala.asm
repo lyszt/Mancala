@@ -84,11 +84,13 @@ main:
     lw         a0, 0(a0)
     call       inicializar_tabuleiro
     call       mostra_tabuleiro
-
+main_game_loop:
 # para fins de teste
+    # o jogo não acaba jamais, pois isso não foi implementado ainda
     call       player_one_turn
     call       player_two_turn
-
+    j main_game_loop
+main_end:
     li         a7, 10
     ecall
 
