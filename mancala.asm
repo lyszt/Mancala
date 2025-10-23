@@ -3,6 +3,12 @@
 
 SEED_INIT:
     .word      4
+vitorias_j1:
+    .word 0 
+vitorias_j2: 
+    .word 0 
+turno_atual:
+    .word 0 # 0 para j1, 1 para j2. Vai ser usado mais tarde.
 cavidades:
 # Tem alguma razão pra ter uma função propria pra settar os numeros?
 # sim, precisa
