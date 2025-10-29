@@ -78,19 +78,33 @@ quebra_linha:
 
     .align     2
 
+
+
     .text
 main:
     la         a0, SEED_INIT
     lw         a0, 0(a0)
     call       inicializar_tabuleiro
+main_game_loop:
+    # para fins de teste
+    # o jogo não acaba jamais, pois isso não foi implementado ainda
+    
+    call       player_one_turn
+    # Informando ao distribute pellets que é o jogador 1 jogando
+    li a1, 0
+    call       distribute_pellets
     call       mostra_tabuleiro
 
-# para fins de teste
-    call       player_one_turn
     call       player_two_turn
-
+    li a1, 1
+    call       distribute_pellets 
+    call       mostra_tabuleiro  
+    
+    j          main_game_loop
+main_end:
     li         a7, 10
     ecall
+
 
 # FUNÇÕES DE JOGADA
 
@@ -220,6 +234,55 @@ print_end:
     endF
     ret
 
+
+distribute_pellets:
+    startF 
+    # recebe o numero da escolha em a0
+    # recebe n° do jogador em a1 
+    mv t4, a1
+    li a1, 4
+    li a2, 14 # loop maximo 
+    li t5, 13 # vala do j2 
+    li t6, 6 # vala do j1 
+    la a3, cavidades 
+    mul a1, a1, a0 
+    add a3, a3, a1 
+
+    lw t0, 0(a3) # Quantas tem nessa casa?
+    sw x0, 0(a3) # deixa aqui como 0 porque nós pegamos as pedras aqui
+    mv t1, t0 # Contador de peças a colocar  
+distribute_pellets_loop:
+    beq t1, x0, end_distribute_pellets
+    addi a3, a3, 4 
+    addi a0, a0, 1 # a escolha aumenta em 1, funcionando como indice
+    beq a0, a2, reset_distribute_pellets_counter 
+    beq t4, x0, distribute_pellets_check_ignore_j1
+    j distribute_pellets_check_ignore_j2
+
+distribute_pellets_drop: # 
+    lw t0, 0(a3) # Quantas tem nessa casa?
+    addi t0, t0, 1 # Casa = o que tem + 1 
+    addi t1, t1, -1
+    sw t0, 0(a3)  
+    j distribute_pellets_loop
+
+distribute_pellets_check_ignore_j1:
+    beq a0, t5, distribute_pellets_loop 
+    j distribute_pellets_drop
+distribute_pellets_check_ignore_j2:
+    beq a0, t6, distribute_pellets_loop
+    j distribute_pellets_drop
+reset_distribute_pellets_counter:
+    mv a0, x0
+    la a3, cavidades 
+    mul a1, a1, a0 
+    add a3, a3, a1 
+    beq t4, x0, distribute_pellets_check_ignore_j1
+    j distribute_pellets_check_ignore_j2
+
+end_distribute_pellets:
+    endF 
+    ret
 
 # Funções de apresentação
 
