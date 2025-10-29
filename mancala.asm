@@ -90,10 +90,13 @@ main_game_loop:
     # o jogo não acaba jamais, pois isso não foi implementado ainda
     
     call       player_one_turn
+    # Informando ao distribute pellets que é o jogador 1 jogando
+    li a1, 0
     call       distribute_pellets
     call       mostra_tabuleiro
 
     call       player_two_turn
+    li a1, 1
     call       distribute_pellets 
     call       mostra_tabuleiro  
     
@@ -235,8 +238,12 @@ print_end:
 distribute_pellets:
     startF 
     # recebe o numero da escolha em a0
+    # recebe n° do jogador em a1 
+    mv t4, a1
     li a1, 4
     li a2, 14 # loop maximo 
+    li t5, 13 # vala do j2 
+    li t6, 6 # vala do j1 
     la a3, cavidades 
     mul a1, a1, a0 
     add a3, a3, a1 
@@ -249,6 +256,8 @@ distribute_pellets_loop:
     addi a3, a3, 4 
     addi a0, a0, 1 # a escolha aumenta em 1, funcionando como indice
     beq a0, a2, reset_distribute_pellets_counter 
+    beq t4, x0, distribute_pellets_check_ignore_j1
+    j distribute_pellets_check_ignore_j2
 
 distribute_pellets_drop: # 
     lw t0, 0(a3) # Quantas tem nessa casa?
@@ -257,12 +266,19 @@ distribute_pellets_drop: #
     sw t0, 0(a3)  
     j distribute_pellets_loop
 
+distribute_pellets_check_ignore_j1:
+    beq a0, t5, distribute_pellets_loop 
+    j distribute_pellets_drop
+distribute_pellets_check_ignore_j2:
+    beq a0, t6, distribute_pellets_loop
+    j distribute_pellets_drop
 reset_distribute_pellets_counter:
     mv a0, x0
     la a3, cavidades 
     mul a1, a1, a0 
     add a3, a3, a1 
-    j distribute_pellets_drop 
+    beq t4, x0, distribute_pellets_check_ignore_j1
+    j distribute_pellets_check_ignore_j2
 
 end_distribute_pellets:
     endF 
