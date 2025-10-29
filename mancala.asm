@@ -86,10 +86,11 @@ main:
 main_game_loop:
     # para fins de teste
     # o jogo não acaba jamais, pois isso não foi implementado ainda
-    call       mostra_tabuleiro
     call       player_one_turn
     call distribute_pellets
+    call       mostra_tabuleiro
     call       player_two_turn
+    call       mostra_tabuleiro
     call distribute_pellets
     j main_game_loop
 main_end:
