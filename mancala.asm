@@ -78,6 +78,8 @@ quebra_linha:
 
     .align     2
 
+
+
     .text
 main:
     la         a0, SEED_INIT
@@ -86,13 +88,16 @@ main:
 main_game_loop:
     # para fins de teste
     # o jogo não acaba jamais, pois isso não foi implementado ainda
+    
     call       player_one_turn
-    call distribute_pellets
+    call       distribute_pellets
     call       mostra_tabuleiro
+
     call       player_two_turn
-    call       mostra_tabuleiro
-    call distribute_pellets
-    j main_game_loop
+    call       distribute_pellets 
+    call       mostra_tabuleiro  
+    
+    j          main_game_loop
 main_end:
     li         a7, 10
     ecall
@@ -241,20 +246,24 @@ distribute_pellets:
     mv t1, t0 # Contador de peças a colocar  
 distribute_pellets_loop:
     beq t1, x0, end_distribute_pellets
-    beq a0, a2, reset_distribute_pellets_counter 
-    lw t0, 0(a3) # Quantas tem nessa casa?
-    addi t0, t0, 1 # Casa = o que tem + 1 
-    sw t0, 0(a3)  
     addi a3, a3, 4 
     addi a0, a0, 1 # a escolha aumenta em 1, funcionando como indice
-    addi t1, t1, -1 # Colocando uma bolinha perde-se outra 
+    beq a0, a2, reset_distribute_pellets_counter 
+
+distribute_pellets_drop: # 
+    lw t0, 0(a3) # Quantas tem nessa casa?
+    addi t0, t0, 1 # Casa = o que tem + 1 
+    addi t1, t1, -1
+    sw t0, 0(a3)  
     j distribute_pellets_loop
+
 reset_distribute_pellets_counter:
     mv a0, x0
     la a3, cavidades 
     mul a1, a1, a0 
     add a3, a3, a1 
-    j distribute_pellets_loop
+    j distribute_pellets_drop 
+
 end_distribute_pellets:
     endF 
     ret
