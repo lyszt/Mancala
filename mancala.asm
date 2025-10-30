@@ -292,7 +292,7 @@ mostra_tabuleiro:
     call       print_horizontal_line
 
 # Linha do Jogador 1 (topo)
-    li         a1, 0
+    li         a1, 1
     call       print_quadrado_vazio
     call       print_valores_linha
     call       print_quadrado_vazio
@@ -304,7 +304,7 @@ mostra_tabuleiro:
 
     call       print_quadrado_vazio
 # Linha do Jogador 2 (base)
-    li         a1, 1
+    li         a1, 0
     call       print_valores_linha
     call       print_quadrado_vazio
     call       print_quebra_linha
