@@ -86,6 +86,7 @@ main:
     lw         a0, 0(a0)
     call       inicializar_tabuleiro
 main_game_loop:
+    call mostra_tabuleiro
     # para fins de teste
     # o jogo não acaba jamais, pois isso não foi implementado ainda
     
@@ -234,7 +235,6 @@ print_end:
     endF
     ret
 
-
 distribute_pellets:
     startF 
     # recebe o numero da escolha em a0
@@ -245,8 +245,8 @@ distribute_pellets:
     li t5, 13 # vala do j2 
     li t6, 6 # vala do j1 
     la a3, cavidades 
-    mul a1, a1, a0 
-    add a3, a3, a1 
+    mul t2, a1, a0 
+    add a3, a3, t2 
 
     lw t0, 0(a3) # Quantas tem nessa casa?
     sw x0, 0(a3) # deixa aqui como 0 porque nós pegamos as pedras aqui
@@ -275,8 +275,8 @@ distribute_pellets_check_ignore_j2:
 reset_distribute_pellets_counter:
     mv a0, x0
     la a3, cavidades 
-    mul a1, a1, a0 
-    add a3, a3, a1 
+    mul t2, a1, a0 
+    add a3, a3, t2 
     beq t4, x0, distribute_pellets_check_ignore_j1
     j distribute_pellets_check_ignore_j2
 
@@ -291,7 +291,7 @@ mostra_tabuleiro:
     call       print_titulo_jogador_2
     call       print_horizontal_line
 
-# Linha do Jogador 1 (topo)
+# Linha do Jogador 2
     li         a1, 1
     call       print_quadrado_vazio
     call       print_valores_linha
@@ -303,7 +303,7 @@ mostra_tabuleiro:
     call       print_quebra_linha
 
     call       print_quadrado_vazio
-# Linha do Jogador 2 (base)
+# Linha do Jogador 1
     li         a1, 0
     call       print_valores_linha
     call       print_quadrado_vazio
@@ -352,12 +352,12 @@ print_meio:
     startF
     call       print_quadrado_esquerda
     la         s0, cavidades
-    lw         a0, 24(s0)
+    lw         a0, 52(s0)
     call       print_integer
     call       print_quadrado_direita
     call       print_horizontal_line_middle
     call       print_quadrado_esquerda
-    lw         a0, 52(s0)
+    lw         a0, 24(s0)
     call       print_integer
     call       print_quadrado_direita
     endF
@@ -380,10 +380,10 @@ valores_linha_j1:
 
 valores_linha_j2:
 # pula pra cavidade 7
-    li         s0, 7
-    li         s1, 12
+    li         s0, 12
+    li         s1, 7
 # endereço = 4 * i
-    j          loop_valores
+    j          loop_valores_j2
 
 loop_valores:
 # atual indice
@@ -397,6 +397,21 @@ loop_valores:
     addi       s0, s0, 1
     call       print_quadrado_direita
     j          loop_valores
+
+
+loop_valores_j2:
+# precisamos printar ao contrário, porque no tabuleiro na verdade está ao contrario
+# atual indice
+    blt        s0, s1, valores_end
+    call       print_quadrado_esquerda
+    mul        t5, s0, t2
+    add        t5, s2, t5
+    lw         t4, 0(t5)
+    mv         a0, t4
+    call       print_integer
+    addi       s0, s0, -1
+    call       print_quadrado_direita
+    j          loop_valores_j2
 valores_end:
     endF
     ret
