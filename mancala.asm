@@ -235,6 +235,11 @@ print_end:
     endF
     ret
 
+
+check_where_landed:
+    # Função que checa onde a bolinha parou para executar as regras do jogo
+
+
 distribute_pellets:
     startF 
     # recebe o numero da escolha em a0
@@ -281,6 +286,8 @@ reset_distribute_pellets_counter:
     j distribute_pellets_check_ignore_j2
 
 end_distribute_pellets:
+    mv s0, t1
+    mv s1, a0
     endF 
     ret
 
