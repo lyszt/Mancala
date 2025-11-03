@@ -91,37 +91,99 @@ main_game_loop:
     # o jogo não acaba jamais, pois isso não foi implementado ainda
     
     call       player_one_turn
-    # Informando ao distribute pellets que é o jogador 1 jogando
-    li a1, 0
-    call       distribute_pellets
     call       mostra_tabuleiro
-
     call       player_two_turn
-    li a1, 1
-    call       distribute_pellets 
+    
     call       mostra_tabuleiro  
     
     j          main_game_loop
+
+   # O jogo termina quando todas as 6 cavidades de um dos lados do tabuleiro ficam vazias.
+   # Ou seja, quando a soma de todas as cavidades for 0
+   # entao e so somar
 main_end:
     li         a7, 10
     ecall
+
+
+
 
 
 # FUNÇÕES DE JOGADA
 
 player_one_turn:
     startF
+
+player_one_turn_loop:
 # é o jogador 1 que vai jogar
     li         a1, 0
 # O offset é sempre relativo
     call       cavidade_choice_start
+    # Informando ao distribute pellets que é o jogador 1 jogando
+    li a1, 0
+    call       distribute_pellets
+    # retorna onde a pedra parou em a0
+    li t1, 6
+    beq a0, t1, player_one_turn_loop
+    # impossivel ser abaixo de 0. Se está abaixo de 5 então está na area do jogador
+    li t1, 5
+    ble a0, t1, player_one_check_empty
+
+    j j1_end_turn
+
+player_one_check_empty:
+    # aqui calculamos o endereço atual 
+    call       calcula_endereco_cavidade  # a0 já tem o índice, retorna endereço em a5
+    mv         t6, a5                      # salva endereço
+    lw         a2, 0(t6)
+    li         t1, 1
+    beq        a2, t1, player_one_steal
+    j          j1_end_turn
+
+player_one_steal:
+    # caso de roubo da casa contraria
+    # o contrário é 12 - n 
+    li         t1, 12 
+    sub        t1, t1, a0                 # índice oposto
+    mv         s0, a0                      # salva índice original
+    
+    # pega valor da casa oposta
+    mv         a0, t1                      
+    # índice oposto
+    call       calcula_endereco_cavidade 
+     # retorna endereço em a5
+    lw         a3, 0(a5)                   
+    # valor da casa oposta
+    
+    # soma com o valor atual e guarda na casa original
+    add        a2, a2, a3 
+    sw         a2, 0(t6)
+
+    # zera a casa do oponente
+    sw         x0, 0(a5)
+
+ 
+
+
+
+j1_end_turn:
     endF
     ret
 
 player_two_turn:
     startF
+
+player_two_turn_loop:
     li         a1, 1
     call       cavidade_choice_start
+    li a1, 1
+    call       distribute_pellets
+
+    li t1, 13
+    beq a0, t1, player_two_turn_loop
+    j j2_end_turn
+
+j2_end_turn:
     endF
     ret
 
@@ -239,6 +301,28 @@ print_end:
 check_where_landed:
     # Função que checa onde a bolinha parou para executar as regras do jogo
 
+# Função auxiliar: calcula endereço da cavidade
+# Entrada: a0 = índice da cavidade (0-13)
+# Saída: a5 = endereço da cavidade
+calcula_endereco_cavidade:
+    startF
+    li         t0, 4                      # bytes por palavra
+    mul        t0, a0, t0                 # offset = índice * 4
+    la         t1, cavidades              # base
+    add        a5, t1, t0                 # endereço = base + offset
+    endF
+    ret
+    
+# armazena valor em uma cavidade
+
+armazena_cavidade:
+    startF
+    # retorna endereço em a5
+    call       calcula_endereco_cavidade  
+    sw         a1, 0(a5)
+    # guarda valor no endereço                   
+    endF
+    ret
 
 distribute_pellets:
     startF 
@@ -287,6 +371,7 @@ reset_distribute_pellets_counter:
 
 end_distribute_pellets:
     mv s0, t1
+    # Retorna onde a pedra parou
     mv s1, a0
     endF 
     ret
@@ -325,18 +410,18 @@ inicializar_tabuleiro:
     startF
 # Supoe-se que o numero esteja em a0
 # Isso pra caso queiramos tirar o SEED_INIT
+    mv         s0, a0                      # salva o valor inicial (SEED_INIT)
     li         a1, 0
-    la         a3, cavidades
     li         t0, 5                                                                       # max j1
     li         t1, 12                                                                      # max j2
-    li         t2, 4
 
 inicializar_tabuleiro_loop_j1:
 # começa de 0 vai até 5
     bgt        a1, t0, inicializar_tabuleiro_skip_cavidade                                 # se 5 vai-se embora pro j2
-    mul        a4, a1, t2                                                                  # endereço = i * 4
-    add        a4, a3, a4
-    sw         a0, 0(a4)
+    mv         a0, a1                      # índice
+    mv         a1, s0                      # valor a armazenar
+    call       armazena_cavidade
+    mv         a1, a0                      # restaura contador
     addi       a1, a1, 1
     j          inicializar_tabuleiro_loop_j1
 
@@ -345,9 +430,10 @@ inicializar_tabuleiro_skip_cavidade:
     j          inicializar_tabuleiro_loop_j2
 inicializar_tabuleiro_loop_j2:
     bgt        a1, t1, end_inicializar_tabuleiro
-    mul        a4, a1, t2                                                                  # endereço = i * 4
-    add        a4, a4, a3
-    sw         a0, 0(a4)
+    mv         a0, a1                     
+    mv         a1, s0                     
+    call       armazena_cavidade
+    mv         a1, a0                      
     addi       a1, a1, 1
     j          inicializar_tabuleiro_loop_j2
 end_inicializar_tabuleiro:
