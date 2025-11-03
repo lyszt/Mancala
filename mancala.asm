@@ -87,6 +87,8 @@ main:
     call       inicializar_tabuleiro
 main_game_loop:
     call mostra_tabuleiro
+    call checar_fim
+    bne x0, a0, main_end
     # para fins de teste
     # o jogo não acaba jamais, pois isso não foi implementado ainda
     
@@ -299,22 +301,16 @@ print_end:
 
 
 check_where_landed:
-    # Função que checa onde a bolinha parou para executar as regras do jogo
-
-# Função auxiliar: calcula endereço da cavidade
-# Entrada: a0 = índice da cavidade (0-13)
-# Saída: a5 = endereço da cavidade
+# Função que checa onde a bolinha parou para executar as regras do jogo
+# em a5 pra n atrapalhar
 calcula_endereco_cavidade:
-    startF
     li         t0, 4                      # bytes por palavra
     mul        t0, a0, t0                 # offset = índice * 4
     la         t1, cavidades              # base
     add        a5, t1, t0                 # endereço = base + offset
-    endF
     ret
     
 # armazena valor em uma cavidade
-
 armazena_cavidade:
     startF
     # retorna endereço em a5
@@ -322,6 +318,65 @@ armazena_cavidade:
     sw         a1, 0(a5)
     # guarda valor no endereço                   
     endF
+    ret
+
+
+# carrega valor de uma cavidade
+# a0 = índice da cavidade 
+carrega_cavidade:
+    startF
+    call       calcula_endereco_cavidade  
+    lw         a0, 0(a5)                 
+     # carrega valor do endereço
+    endF
+    ret
+
+
+checar_fim:
+    startF
+    # Verifica se algum lado do tabuleiro está vazio
+    # Retorna 1 em a0 se o jogo acabou, 0 caso contrário
+    
+    # Checa cavidades 0-5 
+    li s0, 0      # acumulador para somar valores
+    li s1, 0      # índice atual
+    li s2, 6      # limite 
+    
+checar_fim_loop_j1:
+    beq s1, s2, checar_fim_j1_vazio  # se chegou ao fim, lado está vazio
+    mv a0, s1                         # prepara índice para carrega_cavidade
+    call carrega_cavidade             # retorna valor em a0
+    add s0, s0, a0                    # acumula o valor
+    addi s1, s1, 1                    # incrementa índice
+    j checar_fim_loop_j1
+    
+checar_fim_j1_vazio:
+    beq s0, x0, checar_fim_pos        # se soma é zero, jogo acabou
+    
+    # Checa cavidades 7-12 
+    li s0, 0      # acumulador para somar valores
+    li s1, 7      # índice inicial
+    li s2, 13     # limite 
+    
+checar_fim_loop_j2:
+    beq s1, s2, checar_fim_j2_vazio  # se chegou ao fim, lado está vazio
+    mv a0, s1                         # prepara índice para carrega_cavidade
+    call carrega_cavidade             # retorna valor em a0
+    add s0, s0, a0                    # acumula o valor
+    addi s1, s1, 1                    # incrementa índice
+    j checar_fim_loop_j2
+    
+checar_fim_j2_vazio:
+    beq s0, x0, checar_fim_pos        
+    # Se nenhum lado está vazio, jogo continua
+    li a0, 0
+    endF 
+    ret
+    
+checar_fim_pos:
+    # Algum lado está vazio, jogo acabou
+    li a0, 1
+    endF 
     ret
 
 distribute_pellets:
@@ -370,9 +425,8 @@ reset_distribute_pellets_counter:
     j distribute_pellets_check_ignore_j2
 
 end_distribute_pellets:
-    mv s0, t1
-    # Retorna onde a pedra parou
-    mv s1, a0
+    # Retorna onde a pedra parou em a0
+    # a0 já contém o índice correto
     endF 
     ret
 
@@ -408,39 +462,37 @@ mostra_tabuleiro:
 
 inicializar_tabuleiro:
     startF
-# Supoe-se que o numero esteja em a0
-# Isso pra caso queiramos tirar o SEED_INIT
+    # Supoe-se que o numero esteja em a0
+    # Isso pra caso queiramos tirar o SEED_INIT
     mv         s0, a0                      # salva o valor inicial (SEED_INIT)
-    li         a1, 0
-    li         t0, 5                                                                       # max j1
-    li         t1, 12                                                                      # max j2
+    li         s1, 0                       # contador/índice (s1 é salvo)
+    li         s2, 5                       # max j1 (USA S2, que é salvo, em vez de t0)
+    # li         t1, 12                    # Tente não usar em t1, deu problema
 
 inicializar_tabuleiro_loop_j1:
 # começa de 0 vai até 5
-    bgt        a1, t0, inicializar_tabuleiro_skip_cavidade                                 # se 5 vai-se embora pro j2
-    mv         a0, a1                      # índice
+    bgt        s1, s2, inicializar_tabuleiro_skip_cavidade # Compara com s2
+    mv         a0, s1                      # índice
     mv         a1, s0                      # valor a armazenar
     call       armazena_cavidade
-    mv         a1, a0                      # restaura contador
-    addi       a1, a1, 1
+    addi       s1, s1, 1                   # incrementa contador
     j          inicializar_tabuleiro_loop_j1
 
 inicializar_tabuleiro_skip_cavidade:
-    li         a1, 7
+    li         s1, 7                       # reinicia contador para j2
     j          inicializar_tabuleiro_loop_j2
 inicializar_tabuleiro_loop_j2:
-    bgt        a1, t1, end_inicializar_tabuleiro
-    mv         a0, a1                     
-    mv         a1, s0                     
+    li         t1, 12                      
+    bgt        s1, t1, end_inicializar_tabuleiro
+    mv         a0, s1                      # índice
+    mv         a1, s0                      # valor a armazenar
     call       armazena_cavidade
-    mv         a1, a0                      
-    addi       a1, a1, 1
+    addi       s1, s1, 1                   # incrementa contador
     j          inicializar_tabuleiro_loop_j2
 end_inicializar_tabuleiro:
     endF
     ret
-
-
+    
 print_meio:
     startF
     call       print_quadrado_esquerda
