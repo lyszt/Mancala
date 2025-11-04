@@ -155,16 +155,25 @@ player_one_steal:
     call       calcula_endereco_cavidade 
      # retorna endereço em a5
     lw         a3, 0(a5)                   
-    # valor da casa oposta
-    
-    # soma com o valor atual e guarda na casa original
-    add        a2, a2, a3 
-    sw         a2, 0(t6)
-
     # zera a casa do oponente
     sw         x0, 0(a5)
 
- 
+
+    # pega a cavidade de score do jogador 2
+
+    sw         x0, 0(t6)
+
+
+    li a0, 6
+    call calcula_endereco_cavidade
+    mv t6, a5
+    # soma com o valor atual e guarda na cavidade
+    add        a2, a2, a3 
+    lw         a4, 0(t6)
+    add a4, a4, a2
+    sw a4, 0(t6)
+
+
 
 
 
@@ -183,7 +192,55 @@ player_two_turn_loop:
 
     li t1, 13
     beq a0, t1, player_two_turn_loop
+     # impossivel ser abaixo de 7
+    li t1, 7
+    bge a0, t1, player_two_check_empty
+
     j j2_end_turn
+
+
+player_two_check_empty:
+    # aqui calculamos o endereço atual 
+    call       calcula_endereco_cavidade  # a0 já tem o índice, retorna endereço em a5
+    mv         t6, a5                      # salva endereço
+    lw         a2, 0(t6)
+    li         t1, 1
+    beq        a2, t1, player_two_steal
+    
+    j          j2_end_turn
+
+player_two_steal:
+    # caso de roubo da casa contraria
+    # o contrário é 12 - n 
+    li         t1, 12 
+    sub        t1, t1, a0                 # índice oposto
+    mv         s0, a0                      # salva índice original
+    
+    # pega valor da casa oposta
+    mv         a0, t1                      
+    # índice oposto
+    call       calcula_endereco_cavidade 
+     # retorna endereço em a5
+    lw         a3, 0(a5)                   
+    # zera a casa do oponente
+    sw         x0, 0(a5)
+
+
+    # pega a cavidade de score do jogador 2
+
+    sw         x0, 0(t6)
+
+
+    li a0, 13
+    call calcula_endereco_cavidade
+    mv t6, a5
+    # soma com o valor atual e guarda na cavidade
+    add        a2, a2, a3 
+    lw         a4, 0(t6)
+    add a4, a4, a2
+    sw a4, 0(t6)
+
+
 
 j2_end_turn:
     endF
@@ -304,10 +361,10 @@ check_where_landed:
 # Função que checa onde a bolinha parou para executar as regras do jogo
 # em a5 pra n atrapalhar
 calcula_endereco_cavidade:
-    li         t0, 4                      # bytes por palavra
+    li         t0, 4                      # bytes 
     mul        t0, a0, t0                 # offset = índice * 4
-    la         t1, cavidades              # base
-    add        a5, t1, t0                 # endereço = base + offset
+    la         t1, cavidades              
+    add        a5, t1, t0                 # endereço = inicio + offset
     ret
     
 # armazena valor em uma cavidade
