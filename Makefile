@@ -1,6 +1,6 @@
-.PHONY: build
+.PHONY: build compose
 
-build: 
+build: compose
 	echo "Criando o arquivo de envio para o professor."
 	rm -rf build
 	mkdir build
@@ -11,3 +11,10 @@ build:
 	
 	riscv64-unknown-elf-gcc -nostdlib -o ./build/mancala ./build/mancala.s
 	rm ./build/mancala.s
+
+	@mkdir -p Relatório
+	latexmk -pdf -outdir=Relatório Relatório/joaoluisalmeidasantos_20240002408.tex
+	
+compose:
+	@mkdir -p Relatório
+	latexmk -pdf -outdir=Relatório Relatório/joaoluisalmeidasantos_20240002408.tex
