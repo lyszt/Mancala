@@ -5,6 +5,7 @@
 \usepackage{setspace}
 \usepackage{lettrine}
 \usepackage{fancyhdr}
+\usepackage[utf8]{inputenc}
 \usepackage[portuguese]{babel}
 \renewcommand{\baselinestretch}{1.5} 
 \fancyhf{} 
@@ -27,9 +28,21 @@
 
 
 \section{Introdução}
+
+Este relatório descreve o desenvolvimento de uma implementação do jogo Mancala em Assembly RISC-V, executada no simulador RARS, como parte das atividades da disciplina de Organização de Computadores. A proposta do trabalho foi de simular o jogo de tabuleiro Mancala em formato de terminal.
+
 \subsection{Demanda do Trabalho}
+O enunciado disponibilizado exige uma versão do Mancala com doze cavidades e dois poços, quatro sementes por casa no estado inicial, suporte a turnos extras, captura de sementes e detecção do fim de jogo. Dentro do código, procurei modularizar e abstrair o máximo da lógica, dado o uso de funções de Macro e a criação de funções que vaziam processos simples, como printar, printar em loop, ler inteiro, etc. 
 
 \section{Explicação do Código}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.85\textwidth]{Imagens/tabuleiro.png}
+	\caption{Representação do tabuleiro do Mancala (CrazyGames)}
+	\label{fig:tabuleiro}
+\end{figure}
+
 
 
 \section{Conclusão}
