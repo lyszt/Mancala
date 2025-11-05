@@ -3,6 +3,7 @@
 
 SEED_INIT:
     .word      4
+
 vitorias_j1:
     .word 0 
 vitorias_j2: 
@@ -45,6 +46,16 @@ textos_jogador_2:
     .word      titulo_jogador_2
     .word      texto_jogador_2
 
+textos_vitoria_jogador_1:
+    .word vitoria_jogador_1
+    .word texto_quer_jogar
+textos_vitoria_jogador_2:
+    .word vitoria_jogador_2
+    .word texto_quer_jogar
+textos_empate:
+    .word empate
+    .word texto_quer_jogar
+
 
 # Informações dos jogadores
 titulo_jogador_1:
@@ -56,8 +67,25 @@ texto_jogador_1:
 texto_jogador_2:
     .asciz     "Escolha a cavidade [7-12]\n"
 
+vitoria_jogador_1:
+    .asciz "Jogador 1 venceu!\n"
+vitoria_jogador_2:
+    .asciz "Jogador 2 venceu!\n"
+empate:
+    .asciz "Empate!\n"
+
+texto_quer_jogar:
+    .asciz "Quer jogar novamente? 1 para sim, 0 para não... \n"
+
+
 mensagem_valor_invalido:
     .asciz     "Por favor escolha um valor válido!\n"
+mensagem_roubo:
+    .asciz     "Roubou as pedras do adversário!\n"
+mensagem_turno_extra:
+    .asciz     "Caiu na vala! Jogue de novo!\n"
+mensagem_fim_jogo:
+    .asciz     "Fim de jogo! Um lado ficou vazio.\n"
 # Textos do tabuleiro
 titulo_acima_jogador_1:
     .asciz     "                          0 <-- JOGADOR 1   5                          \n"
@@ -87,31 +115,110 @@ main:
     call       inicializar_tabuleiro
 main_game_loop:
     call mostra_tabuleiro
-    call checar_fim
-    bne x0, a0, main_end
-    # para fins de teste
-    # o jogo não acaba jamais, pois isso não foi implementado ainda
     
-    call       player_one_turn
-    call       mostra_tabuleiro
-    call       player_two_turn
+    # Carrega turno_atual para decidir qual jogador joga
+    la t0, turno_atual
+    lw t1, 0(t0)
     
-    call       mostra_tabuleiro  
-    
-    j          main_game_loop
+    # Se turno_atual == 0, jogador 1; se == 1, jogador 2
+    beq t1, x0, main_jogador_1
+    j main_jogador_2
 
-   # O jogo termina quando todas as 6 cavidades de um dos lados do tabuleiro ficam vazias.
-   # Ou seja, quando a soma de todas as cavidades for 0
-   # entao e so somar
+main_jogador_1:
+    call player_one_turn
+    # Alterna para jogador 2
+    li t1, 1
+    la t0, turno_atual
+    sw t1, 0(t0)
+    call soma_valores_j1
+    # Não há função verifica vencedor, ele só ve se a soma de todas as casas é 0 aqui
+    beq a0, x0, verifica_vencedor   
+    j main_game_loop
+
+main_jogador_2:
+    call player_two_turn
+    # Alterna para jogador 1
+    li t1, 0
+    la t0, turno_atual
+    sw t1, 0(t0)
+    call soma_valores_j2
+    beq a0, x0, verifica_vencedor
+    j main_game_loop
+
+main_win_jogador_1:
+    call incrementa_vitoria_j1
+    la a0, textos_vitoria_jogador_1
+    li a1, 2
+    call print
+    # print se difere de print one string. print printa um rotulo inteiro de strings
+    j check_play_again
+main_win_jogador_2:
+    call incrementa_vitoria_j2
+    la a0, textos_vitoria_jogador_2
+    li a1, 2
+    call print
+    j check_play_again
+
 main_end:
+    # Não inicializa o tabuleiro mas zera todas as casas. Essa função foi bem util pra isso.
     li         a7, 10
     ecall
-
-
-
-
+    
 
 # FUNÇÕES DE JOGADA
+
+
+
+   # O jogo termina quando todas as 6 cavidades de um dos lados do tabuleiro de um jogador ficam vazias.
+   # Ou seja, quando a soma de todas as cavidades for 0
+   # entao e so somar
+
+verifica_vencedor:
+    # recebe o jogador que zerou em a0    
+    j guarda_valores_j1
+guarda_valores_j1:
+    call       soma_valores_j1
+    mv         a1, a0 
+    li         a0, 6
+    call       adiciona_na_cavidade
+    j          guarda_valores_j2
+    
+guarda_valores_j2:
+    call       soma_valores_j2
+    # pega a soma, bota em a0 e adiciona na vala do jogador x
+    mv         a1, a0 
+    li         a0, 13
+    call       adiciona_na_cavidade
+    j          compara_valores
+
+compara_valores:
+    li a0, 6
+    call carrega_cavidade
+    mv s0, a0 
+
+    li a0, 13 
+    call carrega_cavidade
+    mv s1, a0 
+
+    # mostra tabuleiro final
+    call       mostra_tabuleiro
+
+    # compara os valores
+    bgt s0, s1, main_win_jogador_1
+    blt s0, s1, main_win_jogador_2
+    # se não for maior nem menor, é empate
+    j main_empate
+    
+main_empate:
+    la a0, textos_empate
+    li a1, 2
+    call print
+    j check_play_again
+
+check_play_again:
+    call read_integer
+    beq a0, x0, main_end
+    j main
 
 player_one_turn:
     startF
@@ -126,12 +233,19 @@ player_one_turn_loop:
     call       distribute_pellets
     # retorna onde a pedra parou em a0
     li t1, 6
-    beq a0, t1, player_one_turn_loop
+    beq a0, t1, player_one_turno_extra
     # impossivel ser abaixo de 0. Se está abaixo de 5 então está na area do jogador
     li t1, 5
     ble a0, t1, player_one_check_empty
 
     j j1_end_turn
+
+player_one_turno_extra:
+    # mostra mensagem de turno extra
+    la         a0, mensagem_turno_extra
+    call       print_one_string
+    call       mostra_tabuleiro
+    j          player_one_turn_loop
 
 player_one_check_empty:
     # aqui calculamos o endereço atual 
@@ -163,16 +277,15 @@ player_one_steal:
 
     sw         x0, 0(t6)
 
+    # adiciona pedras roubadas na vala do j1
+    add        a1, a2, a3 
+    li         a0, 6
+    call       adiciona_na_cavidade
 
-    li a0, 6
-    call calcula_endereco_cavidade
-    mv t6, a5
-    # soma com o valor atual e guarda na cavidade
-    add        a2, a2, a3 
-    lw         a4, 0(t6)
-    add a4, a4, a2
-    sw a4, 0(t6)
-
+    # mostra mensagem de roubo
+    la         a0, mensagem_roubo
+    call       print_one_string
+    call       mostra_tabuleiro
 
 
 
@@ -191,13 +304,19 @@ player_two_turn_loop:
     call       distribute_pellets
 
     li t1, 13
-    beq a0, t1, player_two_turn_loop
+    beq a0, t1, player_two_turno_extra
      # impossivel ser abaixo de 7
     li t1, 7
     bge a0, t1, player_two_check_empty
 
     j j2_end_turn
 
+player_two_turno_extra:
+    # mostra mensagem de turno extra
+    la         a0, mensagem_turno_extra
+    call       print_one_string
+    call       mostra_tabuleiro
+    j          player_two_turn_loop
 
 player_two_check_empty:
     # aqui calculamos o endereço atual 
@@ -230,16 +349,15 @@ player_two_steal:
 
     sw         x0, 0(t6)
 
+    # adiciona pedras roubadas na vala do j2
+    add        a1, a2, a3 
+    li         a0, 13
+    call       adiciona_na_cavidade
 
-    li a0, 13
-    call calcula_endereco_cavidade
-    mv t6, a5
-    # soma com o valor atual e guarda na cavidade
-    add        a2, a2, a3 
-    lw         a4, 0(t6)
-    add a4, a4, a2
-    sw a4, 0(t6)
-
+    # mostra mensagem de roubo
+    la         a0, mensagem_roubo
+    call       print_one_string
+    call       mostra_tabuleiro
 
 
 j2_end_turn:
@@ -337,6 +455,8 @@ valida_escolha_correta:
     li         a3, 1                                                                       # e aqui sucesso
     endF
     ret
+
+# essa função pega os endereços dentro de um rotulo e de printa o que ta dentro fazendo um loop navegando o rotulo
 print:
     startF
 # a0 = valores
@@ -369,11 +489,24 @@ calcula_endereco_cavidade:
     
 # armazena valor em uma cavidade
 armazena_cavidade:
+# indice em a0, valor em a1
     startF
     # retorna endereço em a5
     call       calcula_endereco_cavidade  
     sw         a1, 0(a5)
     # guarda valor no endereço                   
+    endF
+    ret
+
+# adiciona um valor a uma cavidade
+# a0 = indice, a1 = valor
+adiciona_na_cavidade:
+    startF
+    mv         s0, a1                     
+    call       calcula_endereco_cavidade  
+    lw         t0, 0(a5)                  # carrega valor atual
+    add        t0, t0, s0                 # adiciona novo valor
+    sw         t0, 0(a5)                  # guarda de volta
     endF
     ret
 
@@ -388,53 +521,68 @@ carrega_cavidade:
     endF
     ret
 
-
-checar_fim:
+# Soma todos os valores do jogador 1 
+# Retorna a soma em a0
+soma_valores_j1:
     startF
-    # Verifica se algum lado do tabuleiro está vazio
-    # Retorna 1 em a0 se o jogo acabou, 0 caso contrário
+    li         s0, 0                      # acumulador
+    li         s1, 0                      # índice inicial
+    li         s2, 6                      # limite 
     
-    # Checa cavidades 0-5 
-    li s0, 0      # acumulador para somar valores
-    li s1, 0      # índice atual
-    li s2, 6      # limite 
+soma_valores_j1_loop:
+    beq        s1, s2, soma_valores_j1_end
+    mv         a0, s1
+    call       carrega_cavidade           
+    add        s0, s0, a0                 
+    addi       s1, s1, 1
+    j          soma_valores_j1_loop
     
-checar_fim_loop_j1:
-    beq s1, s2, checar_fim_j1_vazio  # se chegou ao fim, lado está vazio
-    mv a0, s1                         # prepara índice para carrega_cavidade
-    call carrega_cavidade             # retorna valor em a0
-    add s0, s0, a0                    # acumula o valor
-    addi s1, s1, 1                    # incrementa índice
-    j checar_fim_loop_j1
-    
-checar_fim_j1_vazio:
-    beq s0, x0, checar_fim_pos        # se soma é zero, jogo acabou
-    
-    # Checa cavidades 7-12 
-    li s0, 0      # acumulador para somar valores
-    li s1, 7      # índice inicial
-    li s2, 13     # limite 
-    
-checar_fim_loop_j2:
-    beq s1, s2, checar_fim_j2_vazio  # se chegou ao fim, lado está vazio
-    mv a0, s1                         # prepara índice para carrega_cavidade
-    call carrega_cavidade             # retorna valor em a0
-    add s0, s0, a0                    # acumula o valor
-    addi s1, s1, 1                    # incrementa índice
-    j checar_fim_loop_j2
-    
-checar_fim_j2_vazio:
-    beq s0, x0, checar_fim_pos        
-    # Se nenhum lado está vazio, jogo continua
-    li a0, 0
-    endF 
+soma_valores_j1_end:
+    mv         a0, s0                     # retorna soma em a0
+    endF
     ret
+
+# Soma todos os valores do jogador 2 
+# Retorna a soma em a0
+soma_valores_j2:
+    startF
+    li         s0, 0                      # acumulador
+    li         s1, 7                      # índice inicial
+    li         s2, 13                     
     
-checar_fim_pos:
-    # Algum lado está vazio, jogo acabou
-    li a0, 1
-    endF 
+soma_valores_j2_loop:
+    beq        s1, s2, soma_valores_j2_end
+    mv         a0, s1
+    call       carrega_cavidade          
+    add        s0, s0, a0                 # acumula
+    addi       s1, s1, 1
+    j          soma_valores_j2_loop
+    
+soma_valores_j2_end:
+    mv         a0, s0                     # retorna soma em a0
+    endF
     ret
+
+# Incrementa o contador de vitórias do jogador 1
+incrementa_vitoria_j1:
+    startF
+    la         t0, vitorias_j1            # carrega endereço de vitorias_j1
+    lw         t1, 0(t0)                  # carrega valor atual
+    addi       t1, t1, 1                  # incrementa
+    sw         t1, 0(t0)                  # salva de volta
+    endF
+    ret
+
+# Incrementa o contador de vitórias do jogador 2
+incrementa_vitoria_j2:
+    startF
+    la         t0, vitorias_j2            
+    lw         t1, 0(t0)                 
+    addi       t1, t1, 1                 
+    sw         t1, 0(t0)                 
+    endF
+    ret
+
 
 distribute_pellets:
     startF 
@@ -690,4 +838,10 @@ print_one_string:
     endF
     ret
 
+read_integer:
+    startF 
+    li a7, 5
+    ecall 
+    endF 
+    ret 
 
