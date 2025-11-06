@@ -25,6 +25,12 @@ jobs:
             python3-venv \
             python3-pip
 
+      - name: Create venv and install Pygments
+        run: |
+          python3 -m venv .venv
+          . .venv/bin/activate
+          pip install --upgrade pip Pygments
+
       - name: Create Imagens directory
         run: |
           mkdir -p Relatório/Imagens
