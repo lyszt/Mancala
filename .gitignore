@@ -1,0 +1,18 @@
+mancala
+_minted
+# LaTeX build artifacts in Relatório (ignore common generated files but keep .tex and images)
+Relatório/*.aux
+Relatório/*.fdb_latexmk
+Relatório/*.fls
+Relatório/*.log
+Relatório/*.out
+Relatório/*.pdf
+Relatório/*.synctex.gz
+Relatório/*.toc
+Relatório/*.bbl
+Relatório/*.blg
+Relatório/*.run.xml
+
+# keep .tex and image files in Relatório tracked
+!Relatório/*.tex
+!Relatório/**/

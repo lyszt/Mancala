@@ -1,0 +1,157 @@
+\documentclass[a4paper]{article}
+\usepackage{inter}
+\usepackage{parskip}
+\usepackage{graphicx} 
+\graphicspath{{Imagens/}{Relatório/Imagens/}}
+\usepackage{setspace}
+\usepackage{lettrine}
+\usepackage{fancyhdr}
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\renewcommand{\baselinestretch}{1.5} 
+\fancyhf{} 
+\renewcommand{\headrulewidth}{0pt} 
+\rfoot{\thepage}
+\usepackage{xcolor}
+\definecolor{LightGray}{gray}{0.9}
+\pagestyle{fancy}
+\renewcommand{\thesection}{\Roman{section}.}
+\renewcommand{\thesubsection}{}
+
+\color{darkgray}
+\usepackage{minted}
+
+\usemintedstyle{tango}
+\setminted{
+    bgcolor=white,
+    fontsize=\small,
+    linenos=true,
+    breaklines=true,
+    frame=single,
+    framesep=2mm,
+    numbersep=5pt,
+    tabsize=4
+}
+\usemintedstyle{pastie}
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \thispagestyle{empty}
+    {\Large Universidade Federal da Fronteira Sul\par}
+    {\large GEX1213 -- Organização de Computadores\par}
+    \vspace{2cm}
+    {\huge\bfseries Relatório Técnico\par}
+    \vspace{0.5cm}
+    {\LARGE Jogo Mancala em Assembly RISC-V\par}
+    \vspace{2cm}
+    \begin{flushleft}
+    \textbf{Integrante:}\\
+    João Luís Almeida Santos -- 20240002408
+    \end{flushleft}
+    \vfill
+    {\large Chapecó -- SC\\\today}
+\end{titlepage}
+
+% sumário
+\tableofcontents
+\newpage
+
+
+\section{Introdução}
+
+Este relatório descreve o desenvolvimento de uma implementação do jogo Mancala em Assembly RISC-V, executada no simulador RARS, como parte das atividades da disciplina de Organização de Computadores. A proposta do trabalho foi de simular o jogo de tabuleiro Mancala em formato de terminal.
+
+\begin{figure}[h]
+	\centering
+	\setlength{\fboxrule}{1pt} 
+	\setlength{\fboxsep}{4pt}  
+	\fbox{\includegraphics[width=0.85\textwidth]{Imagens/tabuleiro.png}}
+	\caption{Representação do tabuleiro do Mancala (CrazyGames)}
+	\label{fig:tabuleiro}
+\end{figure}
+
+
+\subsection{Demanda do Trabalho}
+O enunciado disponibilizado exige uma versão do Mancala com doze cavidades e dois poços, quatro sementes por casa no estado inicial, suporte a turnos extras, captura de sementes e detecção do fim de jogo. Dentro do código, procurei modularizar e abstrair o máximo da lógica, dado o uso de funções de Macro e a criação de funções que vaziam processos simples, como printar, printar em loop, ler inteiro, etc. 
+
+\section{Explicação do Código}
+
+\subsection{Inicialização}
+Os primeiros passos do programa são dados na seção .data. Lá, são declaradas as variáveis, textos necessários para as funções de print, a vitória do jogador, o turno atual, etc. Além disso, todas as cavidades são inicializadas com o valor de 0, e a variável \textbf{SEED\_INIT} é criada com o valor 4. Esta variável pode ser alteradoa para mudar a funcionalidade do jogo.
+\begin{minted}{asm}
+    SEED_INIT:
+    .word      4
+
+    vitorias_j1:
+        .word 0 
+    vitorias_j2: 
+        .word 0 
+    turno_atual:
+        .word 0 
+    cavidades:
+        .word      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    SEED_INIT = 4;
+\end{minted}
+
+Como visto na linha abaixo, cada mensagem para o usuário/jogador foi colocada em asciz. Com essas linhas especificamente foi possível criar o formato formatado do tabuleiro.
+\begin{minted}{asm}
+    
+# Informações dos jogadores
+titulo_jogador_1:
+    .asciz     "Jogador 1\n"
+titulo_jogador_2:
+    .asciz     "Jogador 2\n"
+texto_jogador_1:
+    .asciz     "Escolha a cavidade [0-5]\n"
+texto_jogador_2:
+    .asciz     "Escolha a cavidade [7-12]\n"
+
+vitoria_jogador_1:
+    .asciz "Jogador 1 venceu!\n"
+vitoria_jogador_2:
+    .asciz "Jogador 2 venceu!\n"
+empate:
+    .asciz "Empate!\n"
+
+texto_quer_jogar:
+    .asciz "Quer jogar novamente? 1 para sim, 0 para não... \n"
+
+
+mensagem_valor_invalido:
+    .asciz     "Por favor escolha um valor válido!\n"
+mensagem_roubo:
+    .asciz     "Roubou as pedras do adversário!\n"
+mensagem_turno_extra:
+    .asciz     "Caiu na vala! Jogue de novo!\n"
+mensagem_fim_jogo:
+    .asciz     "Fim de jogo! Um lado ficou vazio.\n"
+# Textos do tabuleiro
+titulo_acima_jogador_1:
+    .asciz     "                          0 <-- JOGADOR 1   5                          \n"
+titulo_acima_jogador_2:
+    .asciz     "                         12 <-- JOGADOR 2   7                          \n"
+linha_horizontal:
+    .asciz     "+----+----+----+----+----+----+----+----+----+----+----+----+----+----+\n"
+linha_horizontal_meio:
+    .asciz     "----+----+----+----+----+----+----+----+----+----+---+"
+quadrado_vazio:
+    .asciz     "|       |"
+quadrado_esquerda:
+    .asciz     "|   "
+quadrado_direita:
+    .asciz     "   |"
+quebra_linha:
+    .asciz     "\n"
+
+    .align     2
+
+
+\end{minted}
+
+Vale mencionar que em vários pontos, eu coloquei esses textos dentro de rótulos no .text, onde poderiam ser acessados pela função \text{print} para printar valores como se fosse em um for loop. Isso me permitiu diminuir o tamanho do arquivo.
+
+\section{Conclusão}
+
+
+\end{document}
