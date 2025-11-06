@@ -19,7 +19,18 @@
 
 \color{darkgray}
 \usepackage{minted}
-\usemintedstyle{pastie}
+
+\usemintedstyle{tango}
+\setminted{
+    bgcolor=white,
+    fontsize=\small,
+    linenos=true,
+    breaklines=true,
+    frame=single,
+    framesep=2mm,
+    numbersep=5pt,
+    tabsize=4
+}
 \begin{document}
 
 % sumário
@@ -31,19 +42,37 @@
 
 Este relatório descreve o desenvolvimento de uma implementação do jogo Mancala em Assembly RISC-V, executada no simulador RARS, como parte das atividades da disciplina de Organização de Computadores. A proposta do trabalho foi de simular o jogo de tabuleiro Mancala em formato de terminal.
 
-\subsection{Demanda do Trabalho}
-O enunciado disponibilizado exige uma versão do Mancala com doze cavidades e dois poços, quatro sementes por casa no estado inicial, suporte a turnos extras, captura de sementes e detecção do fim de jogo. Dentro do código, procurei modularizar e abstrair o máximo da lógica, dado o uso de funções de Macro e a criação de funções que vaziam processos simples, como printar, printar em loop, ler inteiro, etc. 
-
-\section{Explicação do Código}
-
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.85\textwidth]{Imagens/tabuleiro.png}
+	\setlength{\fboxrule}{1pt} 
+	\setlength{\fboxsep}{4pt}  
+	\fbox{\includegraphics[width=0.85\textwidth]{Imagens/tabuleiro.png}}
 	\caption{Representação do tabuleiro do Mancala (CrazyGames)}
 	\label{fig:tabuleiro}
 \end{figure}
 
 
+\subsection{Demanda do Trabalho}
+O enunciado disponibilizado exige uma versão do Mancala com doze cavidades e dois poços, quatro sementes por casa no estado inicial, suporte a turnos extras, captura de sementes e detecção do fim de jogo. Dentro do código, procurei modularizar e abstrair o máximo da lógica, dado o uso de funções de Macro e a criação de funções que vaziam processos simples, como printar, printar em loop, ler inteiro, etc. 
+
+\section{Explicação do Código}
+
+\subsection{Inicialização}
+Os primeiros passos do programa são dados na seção .data. Lá, são declaradas as variáveis, textos necessários para as funções de print, a vitória do jogador, o turno atual, etc. Além disso, todas as cavidades são inicializadas com o valor de 0, e a variável \textbf{SEED\_INIT} é criada com o valor 4. Esta variável pode ser alteradoa para mudar a funcionalidade do jogo.
+\begin{minted}{riscv}
+    SEED_INIT:
+    .word      4
+
+    vitorias_j1:
+        .word 0 
+    vitorias_j2: 
+        .word 0 
+    turno_atual:
+        .word 0 
+    cavidades:
+        .word      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    SEED_INIT = 4;
+\end{minted}
 
 \section{Conclusão}
 
