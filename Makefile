@@ -21,6 +21,5 @@ compose:
 	@. .venv/bin/activate && pip install --upgrade pip Pygments || \
 		echo "Warning: could not install Pygments into .venv (check python3 and pip)." >&2
 	@echo "Building PDF with latexmk (using pygmentize from .venv if available)"
-	@PATH="$(PWD)/.venv/bin:$$PATH" latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode -shell-escape %O %S" -outdir="Relatório" "Relatório/joaoluisalmeidasantos_20240002408.tex"
-	mv Relatório/joaoluisalmeidasantos_20240002408.pdf build/joaoluisalmeidasantos_20240002408.pdf
+	@PATH="$(PWD)/.venv/bin:$$PATH" cd "Relatório" && latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode -shell-escape %O %S" joaoluisalmeidasantos_20240002408.tex
 	
