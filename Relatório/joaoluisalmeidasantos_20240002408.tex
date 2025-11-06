@@ -149,7 +149,51 @@ quebra_linha:
 
 \end{minted}
 
-Vale mencionar que em vários pontos, eu coloquei esses textos dentro de rótulos no .text, onde poderiam ser acessados pela função \text{print} para printar valores como se fosse em um for loop. Isso me permitiu diminuir o tamanho do
+Vale mencionar que em vários pontos, eu coloquei esses textos dentro de rótulos no .text, onde poderiam ser acessados pela função \textbf{print} para printar valores como se fosse em um for loop. Isso me permitiu diminuir o tamanho do arquivo no geral. O código no total deu 847 linhas, contando os comentários. 
+
+\subsection{Função: Inicializa tabuleiro}
+A primeira função a ser chamada dentro do main é a de inicialização de tabuleiro. Ela é essencial para colocar os valores necessários dentro das cavidades para que o jogo efetivamente se inicie. 
+
+Dentro dessa função, recebemos o número desejado em a0. Isso acontece apesar da existência do SEED\_INIT. Significa que a função não lê diretamente o SEED\_INIT. Ela recebe-o no início. Acredito que isso seja mais eficaz para caso queiramos mudar a lógica do tabuleiro de alguma forma.
+
+De todo modo, a função prossegue. Ao receber o valor em a0, ela salva o valor em s0 para não perder em futuras chamadas de funções. Logo após, em \textbf{li s2, 5}, decidimos onde o loop vai parar enquanto estiver enchendo as cavidades. Não podemos chegar em 6 pois ai se localiza a cavidade de um dos jogadores. 
+
+Iniciamos o Loop. Enquanto i não for igual a 5, continuamos. Chamamos a função auxiliar \textbf{armazena\_cavidade} para armazenar o valor no endereço i. A função de armazenar cavidade foi útil para evitar ter que ficar repetindo endereço inicial + i * 4 para acessar endereços toda hora. 
+
+\begin{minted}{asm}
+    inicializar_tabuleiro:
+    startF
+    # Supoe-se que o numero esteja em a0
+    # Isso pra caso queiramos tirar o SEED_INIT
+    mv         s0, a0                      # salva o valor inicial (SEED_INIT)
+    li         s1, 0                       # contador/índice (s1 é salvo)
+    li         s2, 5                       # max j1 (USA S2, que é salvo, em vez de t0)
+    # li         t1, 12                    # Tente não usar em t1, deu problema
+
+inicializar_tabuleiro_loop_j1:
+# começa de 0 vai até 5
+    bgt        s1, s2, inicializar_tabuleiro_skip_cavidade # Compara com s2
+    mv         a0, s1                      # índice
+    mv         a1, s0                      # valor a armazenar
+    call       armazena_cavidade
+    addi       s1, s1, 1                   # incrementa contador
+    j          inicializar_tabuleiro_loop_j1
+
+inicializar_tabuleiro_skip_cavidade:
+    li         s1, 7                       # reinicia contador para j2
+    j          inicializar_tabuleiro_loop_j2
+inicializar_tabuleiro_loop_j2:
+    li         t1, 12                      
+    bgt        s1, t1, end_inicializar_tabuleiro
+    mv         a0, s1                      # índice
+    mv         a1, s0                      # valor a armazenar
+    call       armazena_cavidade
+    addi       s1, s1, 1                   # incrementa contador
+    j          inicializar_tabuleiro_loop_j2
+end_inicializar_tabuleiro:
+    endF
+    ret
+\end{minted}
 
 \section{Conclusão}
 
