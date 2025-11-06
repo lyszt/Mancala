@@ -1,0 +1,7 @@
+\babel@toc {portuguese}{}\relax 
+\contentsline {section}{\numberline {I.}Introdução}{2}{}%
+\contentsline {subsection}{\numberline {}Demanda do Trabalho}{2}{}%
+\contentsline {section}{\numberline {II.}Explicação do Código}{2}{}%
+\contentsline {subsection}{\numberline {}Inicialização}{2}{}%
+\contentsline {subsection}{\numberline {}Função: Inicializa tabuleiro}{5}{}%
+\contentsline {section}{\numberline {III.}Conclusão}{7}{}%

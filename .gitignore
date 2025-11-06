@@ -1,15 +1,1 @@
 mancala
-_minted
-Relatório/*.aux
-Relatório/*.fdb_latexmk
-Relatório/*.fls
-Relatório/*.log
-Relatório/*.out
-Relatório/*.pdf
-Relatório/*.synctex.gz
-Relatório/*.toc
-Relatório/*.bbl
-Relatório/*.blg
-Relatório/*.run.xml
-!Relatório/*.tex
-!Relatório/**/
