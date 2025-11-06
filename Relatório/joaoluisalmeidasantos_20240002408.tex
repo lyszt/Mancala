@@ -33,6 +33,8 @@
     tabsize=4
 }
 \usemintedstyle{pastie}
+
+
 \begin{document}
 
 \begin{titlepage}
@@ -65,7 +67,7 @@ Este relatório descreve o desenvolvimento de uma implementação do jogo Mancal
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1\textwidth]{Imagens/tabuleiro3dblender.png}
-	\caption{Representação do tabuleiro do Mancala (CrazyGames)}
+	\caption{Representação do tabuleiro do Mancala}
 	\label{fig:tabuleiro}
 \end{figure}
 
@@ -75,8 +77,19 @@ O enunciado disponibilizado exige uma versão do Mancala com doze cavidades e do
 
 \section{Explicação do Código}
 
+
+\begin{figure}[htbp]
+    \centering 
+    \includegraphics[width=\textwidth]{Imagens/grafico.png} 
+    \caption{Gráfico geral da lógica}
+    \label{fig:logica}
+\end{figure}
+
+
 \subsection{Inicialização}
-Os primeiros passos do programa são dados na seção .data. Lá, são declaradas as variáveis, textos necessários para as funções de print, a vitória do jogador, o turno atual, etc. Além disso, todas as cavidades são inicializadas com o valor de 0, e a variável \textbf{SEED\_INIT} é criada com o valor 4. Esta variável pode ser alteradoa para mudar a funcionalidade do jogo.
+A lógica do programa é resumida, de forma simplificada, na figura \ref{fig:logica}.
+
+Os primeiros passos do programa são dados na seção .data. Lá, são declaradas as variáveis, textos necessários para as funções de print, a vitória do jogador, o turno atual, etc. Além disso, todas as cavidades são inicializadas com o valor de 0, e a variável \textbf{SEED\_INIT} é criada com o valor 4. Esta variável pode ser alterada para mudar a funcionalidade do jogo.
 \begin{minted}{asm}
     SEED_INIT:
     .word      4

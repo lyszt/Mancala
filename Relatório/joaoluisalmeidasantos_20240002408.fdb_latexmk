@@ -1,6 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1762449386.36549 "joaoluisalmeidasantos_20240002408.tex" "joaoluisalmeidasantos_20240002408.pdf" "joaoluisalmeidasantos_20240002408" 1762449391.40018 0
+["pdflatex"] 1762453154.62361 "/home/abensoft/Documents/Personal/Projects/Mancala/Relatório/joaoluisalmeidasantos_20240002408.tex" "joaoluisalmeidasantos_20240002408.pdf" "joaoluisalmeidasantos_20240002408" 1762453159.41829 0
   "/etc/texmf/web2c/texmf.cnf" 1761079964.16684 475 c0e671620eb5563b2130f56340a5fde8 ""
+  "/home/abensoft/Documents/Personal/Projects/Mancala/Relatório/joaoluisalmeidasantos_20240002408.tex" 1762453154.43575 8149 948980660ccd16b9fa9d79b2d75396ee ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/inter/a_qkv7gm.enc" 1700945067 2957 38eb22916327c7e6c0fd91a414cb016c ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecit0900.tfm" 1136768653 1536 2a581b33e8ae2f16b1d733398b528242 ""
@@ -93,16 +94,17 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1741904018 41538 c016915c1d51223b6dbbfe27341748a8 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1761079997 5467255 9a64d1b40e0b893fc5588ecce9d8accf ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1761080142 3349725 c9936298840aae8cf85d529fd2be59d6 ""
-  "Imagens/Tabuleirojoga4setas.png" 1762449109.95659 389070 7fbfd9bc94dd17916eb29ebdddd27fce ""
+  "Imagens/grafico.png" 1762452635.26701 198374 3a647c3880fb0a7907829f063fafb65f ""
   "Imagens/tabuleiro3dblender.png" 1762448468.20568 1362565 462f529158f4fc51302c41aa422a13ce ""
+  "Imagens/tabuleirojoga4setas.png" 1762449884.72772 360543 0225e2be3d1da8325bdb336758cc3aa9 ""
   "_minted/095EE6962A7D1A1DBAEEC81287A89E0B.highlight.minted" 1762439325.36327 3632 ac698bdd7b7c71187222da72bd6e936c ""
   "_minted/B4B65B6DB93BAFBC1CC44F964ECBA7C0.highlight.minted" 1762439325.35924 1179 8694d6fa1a353c8a63ca5d513469848b ""
-  "_minted/FFE7DBCE00DA74EEC04561D50DFFCD88.highlight.minted" 1762439325.36142 4221 05afa2f280a5dd0700829164ef7224ab ""
-  "_minted/_72DE804C0D073639FA55E6A832698A12.index.minted" 1762439336.98465 404 12c2d66c0daaaaea03ee8b5653ee4d4e ""
+  "_minted/FFE7DBCE00DA74EEC04561D50DFFCD88.highlight.minted" 1762452814.40624 4221 05afa2f280a5dd0700829164ef7224ab ""
+  "_minted/_72DE804C0D073639FA55E6A832698A12.index.minted" 1762452815.03106 404 d3bddb6691b9e098cfeb04d7dc756176 ""
   "_minted/pastie.style.minted" 1762439325.3296 7844 32ae8cfaee909f1c0b4075d904c17b4b ""
-  "joaoluisalmeidasantos_20240002408.aux" 1762449391.2745 1321 f23c2d513a928c3571f16fcb9728c074 "pdflatex"
-  "joaoluisalmeidasantos_20240002408.tex" 1762449372.10877 7897 7dd6e34d464125b27891d0df7c15dc28 ""
-  "joaoluisalmeidasantos_20240002408.toc" 1762449391.2755 436 71187988725574a9e4d3cdc1c84cdee4 "pdflatex"
+  "joaoluisalmeidasantos_20240002408.aux" 1762453159.32055 1480 5a7b7e0ba128397257ef9c4edbcd492d "pdflatex"
+  "joaoluisalmeidasantos_20240002408.tex" 1762453154.43575 8149 948980660ccd16b9fa9d79b2d75396ee ""
+  "joaoluisalmeidasantos_20240002408.toc" 1762453159.3208 436 8395186794243b39df754a8df1a46782 "pdflatex"
   (generated)
   "joaoluisalmeidasantos_20240002408.aux"
   "joaoluisalmeidasantos_20240002408.log"
