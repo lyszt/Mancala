@@ -25,6 +25,10 @@ jobs:
             python3-venv \
             python3-pip
 
+      - name: Create Imagens directory
+        run: |
+          mkdir -p Relatório/Imagens
+
       - name: Run make compose
         run: |
           make compose
