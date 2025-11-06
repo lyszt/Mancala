@@ -64,9 +64,7 @@ Este relatório descreve o desenvolvimento de uma implementação do jogo Mancal
 
 \begin{figure}[h]
 	\centering
-	\setlength{\fboxrule}{1pt} 
-	\setlength{\fboxsep}{4pt}  
-	\fbox{\includegraphics[width=0.85\textwidth]{Imagens/tabuleiro3dblender.png}}
+	\includegraphics[width=1\textwidth]{Imagens/tabuleiro3dblender.png}
 	\caption{Representação do tabuleiro do Mancala (CrazyGames)}
 	\label{fig:tabuleiro}
 \end{figure}
@@ -156,9 +154,17 @@ A primeira função a ser chamada dentro do main é a de inicialização de tabu
 
 Dentro dessa função, recebemos o número desejado em a0. Isso acontece apesar da existência do SEED\_INIT. Significa que a função não lê diretamente o SEED\_INIT. Ela recebe-o no início. Acredito que isso seja mais eficaz para caso queiramos mudar a lógica do tabuleiro de alguma forma.
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\textwidth]{Imagens/tabuleirojoga4setas.png}
+	\caption{Demonstração visual da lógica de inicialização do tabuleiro}
+	\label{fig:inicializacao}
+\end{figure}
+
+
 De todo modo, a função prossegue. Ao receber o valor em a0, ela salva o valor em s0 para não perder em futuras chamadas de funções. Logo após, em \textbf{li s2, 5}, decidimos onde o loop vai parar enquanto estiver enchendo as cavidades. Não podemos chegar em 6 pois ai se localiza a cavidade de um dos jogadores. 
 
-Iniciamos o Loop. Enquanto i não for igual a 5, continuamos. Chamamos a função auxiliar \textbf{armazena\_cavidade} para armazenar o valor no endereço i. A função de armazenar cavidade foi útil para evitar ter que ficar repetindo endereço inicial + i * 4 para acessar endereços toda hora. 
+Iniciamos o Loop. Enquanto i não for igual a 5, continuamos. Chamamos a função auxiliar \textbf{armazena\_cavidade} para armazenar o valor no endereço i. A função de armazenar cavidade foi útil para evitar ter que ficar repetindo endereço inicial + i * 4 para acessar endereços toda hora. Todo esse processo é demonstrado pela figura \ref{fig:inicializacao}.
 
 \begin{minted}{asm}
     inicializar_tabuleiro:
