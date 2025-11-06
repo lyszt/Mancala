@@ -2,6 +2,7 @@
 \usepackage{inter}
 \usepackage{parskip}
 \usepackage{graphicx} 
+\graphicspath{{Imagens/}{Relatório/Imagens/}}
 \usepackage{setspace}
 \usepackage{lettrine}
 \usepackage{fancyhdr}
@@ -31,7 +32,29 @@
     numbersep=5pt,
     tabsize=4
 }
+\usemintedstyle{pastie}
 \begin{document}
+
+\begin{titlepage}
+    \centering
+    \thispagestyle{empty}
+    \vspace*{1cm}
+    \includegraphics[width=0.38\textwidth]{Imagens/tabuleiro.png}\par
+    \vspace{1.5cm}
+    {\Large Universidade Federal da Fronteira Sul\par}
+    {\large GEX1213 -- Organização de Computadores\par}
+    \vspace{2cm}
+    {\huge\bfseries Relatório Técnico\par}
+    \vspace{0.5cm}
+    {\LARGE Jogo Mancala em Assembly RISC-V\par}
+    \vspace{2cm}
+    \begin{flushleft}
+    \textbf{Integrante:}\\
+    João Luís Almeida Santos -- 20240002408
+    \end{flushleft}
+    \vfill
+    {\large Chapecó -- SC\\\today}
+\end{titlepage}
 
 % sumário
 \tableofcontents
@@ -59,7 +82,7 @@ O enunciado disponibilizado exige uma versão do Mancala com doze cavidades e do
 
 \subsection{Inicialização}
 Os primeiros passos do programa são dados na seção .data. Lá, são declaradas as variáveis, textos necessários para as funções de print, a vitória do jogador, o turno atual, etc. Além disso, todas as cavidades são inicializadas com o valor de 0, e a variável \textbf{SEED\_INIT} é criada com o valor 4. Esta variável pode ser alteradoa para mudar a funcionalidade do jogo.
-\begin{minted}{riscv}
+\begin{minted}{asm}
     SEED_INIT:
     .word      4
 
