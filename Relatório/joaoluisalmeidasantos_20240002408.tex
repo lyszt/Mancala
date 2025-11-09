@@ -38,27 +38,10 @@
 \begin{document}
 
 \begin{titlepage}
-    \centering
-    \thispagestyle{empty}
-    {\Large Universidade Federal da Fronteira Sul\par}
-    {\large GEX1213 -- Organização de Computadores\par}
-    \vspace{2cm}
-    {\huge\bfseries Relatório Técnico\par}
-    \vspace{0.5cm}
-    {\LARGE Jogo Mancala em Assembly RISC-V\par}
-    \vspace{2cm}
-    \begin{flushleft}
     \textbf{Integrante:}\\
     João Luís Almeida Santos -- 20240002408
-    \end{flushleft}
     \vfill
-    {\large Chapecó -- SC\\\today}
 \end{titlepage}
-
-% sumário
-\tableofcontents
-\newpage
-
 
 \section{Introdução}
 
@@ -66,9 +49,9 @@ Este relatório descreve o desenvolvimento de uma implementação do jogo Mancal
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=1\textwidth]{Imagens/tabuleiro3dblender.png}
+	\includegraphics[width=1\textwidth]{Imagens/tabuleirojoga4setas.png}
 	\caption{Representação do tabuleiro do Mancala}
-	\label{fig:tabuleiro}
+	\label{fig:inicializacao}
 \end{figure}
 
 
@@ -77,144 +60,9 @@ O enunciado disponibilizado exige uma versão do Mancala com doze cavidades e do
 
 \section{Explicação do Código}
 
+O programa inicia na seção .data, onde são declaradas as variáveis, textos para exibição, estado do jogo e a constante SEED_INIT = 4, que define o valor inicial das cavidades e pode ser alterada para modificar o comportamento do jogo. As mensagens ao jogador foram definidas com asciz, permitindo formatar o tabuleiro. Em alguns casos, esses textos foram movidos para rótulos no .text, acessados pela função print, o que reduziu o tamanho total do código (847 linhas, incluindo comentários).
 
-\begin{figure}[htbp]
-    \centering 
-    \includegraphics[width=\textwidth]{Imagens/grafico.png} 
-    \caption{Gráfico geral da lógica}
-    \label{fig:logica}
-\end{figure}
-
-
-\subsection{Inicialização}
-A lógica do programa é resumida, de forma simplificada, na figura \ref{fig:logica}.
-
-Os primeiros passos do programa são dados na seção .data. Lá, são declaradas as variáveis, textos necessários para as funções de print, a vitória do jogador, o turno atual, etc. Além disso, todas as cavidades são inicializadas com o valor de 0, e a variável \textbf{SEED\_INIT} é criada com o valor 4. Esta variável pode ser alterada para mudar a funcionalidade do jogo.
-\begin{minted}{asm}
-    SEED_INIT:
-    .word      4
-
-    vitorias_j1:
-        .word 0 
-    vitorias_j2: 
-        .word 0 
-    turno_atual:
-        .word 0 
-    cavidades:
-        .word      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-    SEED_INIT = 4;
-\end{minted}
-
-Como visto na linha abaixo, cada mensagem para o usuário/jogador foi colocada em asciz. Com essas linhas especificamente foi possível criar o formato formatado do tabuleiro.
-\begin{minted}{asm}
-    
-# Informações dos jogadores
-titulo_jogador_1:
-    .asciz     "Jogador 1\n"
-titulo_jogador_2:
-    .asciz     "Jogador 2\n"
-texto_jogador_1:
-    .asciz     "Escolha a cavidade [0-5]\n"
-texto_jogador_2:
-    .asciz     "Escolha a cavidade [7-12]\n"
-
-vitoria_jogador_1:
-    .asciz "Jogador 1 venceu!\n"
-vitoria_jogador_2:
-    .asciz "Jogador 2 venceu!\n"
-empate:
-    .asciz "Empate!\n"
-
-texto_quer_jogar:
-    .asciz "Quer jogar novamente? 1 para sim, 0 para não... \n"
-
-
-mensagem_valor_invalido:
-    .asciz     "Por favor escolha um valor válido!\n"
-mensagem_roubo:
-    .asciz     "Roubou as pedras do adversário!\n"
-mensagem_turno_extra:
-    .asciz     "Caiu na vala! Jogue de novo!\n"
-mensagem_fim_jogo:
-    .asciz     "Fim de jogo! Um lado ficou vazio.\n"
-# Textos do tabuleiro
-titulo_acima_jogador_1:
-    .asciz     "                          0 <-- JOGADOR 1   5                          \n"
-titulo_acima_jogador_2:
-    .asciz     "                         12 <-- JOGADOR 2   7                          \n"
-linha_horizontal:
-    .asciz     "+----+----+----+----+----+----+----+----+----+----+----+----+----+----+\n"
-linha_horizontal_meio:
-    .asciz     "----+----+----+----+----+----+----+----+----+----+---+"
-quadrado_vazio:
-    .asciz     "|       |"
-quadrado_esquerda:
-    .asciz     "|   "
-quadrado_direita:
-    .asciz     "   |"
-quebra_linha:
-    .asciz     "\n"
-
-    .align     2
-
-
-\end{minted}
-
-Vale mencionar que em vários pontos, eu coloquei esses textos dentro de rótulos no .text, onde poderiam ser acessados pela função \textbf{print} para printar valores como se fosse em um for loop. Isso me permitiu diminuir o tamanho do arquivo no geral. O código no total deu 847 linhas, contando os comentários. 
-
-\subsection{Função: Inicializa tabuleiro}
-A primeira função a ser chamada dentro do main é a de inicialização de tabuleiro. Ela é essencial para colocar os valores necessários dentro das cavidades para que o jogo efetivamente se inicie. 
-
-Dentro dessa função, recebemos o número desejado em a0. Isso acontece apesar da existência do SEED\_INIT. Significa que a função não lê diretamente o SEED\_INIT. Ela recebe-o no início. Acredito que isso seja mais eficaz para caso queiramos mudar a lógica do tabuleiro de alguma forma.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=1\textwidth]{Imagens/tabuleirojoga4setas.png}
-	\caption{Demonstração visual da lógica de inicialização do tabuleiro}
-	\label{fig:inicializacao}
-\end{figure}
-
-
-De todo modo, a função prossegue. Ao receber o valor em a0, ela salva o valor em s0 para não perder em futuras chamadas de funções. Logo após, em \textbf{li s2, 5}, decidimos onde o loop vai parar enquanto estiver enchendo as cavidades. Não podemos chegar em 6 pois ai se localiza a cavidade de um dos jogadores. 
-
-Iniciamos o Loop. Enquanto i não for igual a 5, continuamos. Chamamos a função auxiliar \textbf{armazena\_cavidade} para armazenar o valor no endereço i. A função de armazenar cavidade foi útil para evitar ter que ficar repetindo endereço inicial + i * 4 para acessar endereços toda hora. Todo esse processo é demonstrado pela figura \ref{fig:inicializacao}.
-
-\begin{minted}{asm}
-    inicializar_tabuleiro:
-    startF
-    # Supoe-se que o numero esteja em a0
-    # Isso pra caso queiramos tirar o SEED_INIT
-    mv         s0, a0                      # salva o valor inicial (SEED_INIT)
-    li         s1, 0                       # contador/índice (s1 é salvo)
-    li         s2, 5                       # max j1 (USA S2, que é salvo, em vez de t0)
-    # li         t1, 12                    # Tente não usar em t1, deu problema
-
-inicializar_tabuleiro_loop_j1:
-# começa de 0 vai até 5
-    bgt        s1, s2, inicializar_tabuleiro_skip_cavidade # Compara com s2
-    mv         a0, s1                      # índice
-    mv         a1, s0                      # valor a armazenar
-    call       armazena_cavidade
-    addi       s1, s1, 1                   # incrementa contador
-    j          inicializar_tabuleiro_loop_j1
-
-inicializar_tabuleiro_skip_cavidade:
-    li         s1, 7                       # reinicia contador para j2
-    j          inicializar_tabuleiro_loop_j2
-inicializar_tabuleiro_loop_j2:
-    li         t1, 12                      
-    bgt        s1, t1, end_inicializar_tabuleiro
-    mv         a0, s1                      # índice
-    mv         a1, s0                      # valor a armazenar
-    call       armazena_cavidade
-    addi       s1, s1, 1                   # incrementa contador
-    j          inicializar_tabuleiro_loop_j2
-end_inicializar_tabuleiro:
-    endF
-    ret
-\end{minted}
-
-\section{Conclusão}
+A primeira função chamada no main é a de inicialização do tabuleiro. Ela recebe o valor inicial em a0 (mesmo havendo SEED_INIT) para maior flexibilidade na lógica do jogo. O valor é salvo em s0, e o loop é configurado com li s2, 5, para preencher apenas as cavidades válidas. Dentro do loop, a função auxiliar armazena_cavidade grava os valores nas posições corretas, simplificando o acesso aos endereços de memória. Esse processo é ilustrado na figura \ref{fig:inicializacao}.
 
 
 \end{document}

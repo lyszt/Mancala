@@ -669,11 +669,8 @@ inicializar_tabuleiro:
     startF
     # Supoe-se que o numero esteja em a0
     # Isso pra caso queiramos tirar o SEED_INIT
-    mv         s0, a0                      # salva o valor inicial (SEED_INIT)
-    li         s1, 0                       # contador/índice (s1 é salvo)
-    li         s2, 5                       # max j1 (USA S2, que é salvo, em vez de t0)
-    # li         t1, 12                    # Tente não usar em t1, deu problema
-
+    mv         s0, a0 
+    li         s2, 5              
 inicializar_tabuleiro_loop_j1:
 # começa de 0 vai até 5
     bgt        s1, s2, inicializar_tabuleiro_skip_cavidade # Compara com s2

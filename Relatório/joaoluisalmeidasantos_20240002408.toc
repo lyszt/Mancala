@@ -3,5 +3,5 @@
 \contentsline {subsection}{\numberline {}Demanda do Trabalho}{2}{}%
 \contentsline {section}{\numberline {II.}Explicação do Código}{3}{}%
 \contentsline {subsection}{\numberline {}Inicialização}{3}{}%
-\contentsline {subsection}{\numberline {}Função: Inicializa tabuleiro}{5}{}%
-\contentsline {section}{\numberline {III.}Conclusão}{8}{}%
+\contentsline {subsection}{\numberline {}Função: Inicializa tabuleiro}{3}{}%
+\contentsline {section}{\numberline {III.}Conclusão}{5}{}%
