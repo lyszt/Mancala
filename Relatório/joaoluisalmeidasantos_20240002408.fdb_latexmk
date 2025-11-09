@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1762664966.03074 "Relatório/joaoluisalmeidasantos_20240002408.tex" "Relatório/joaoluisalmeidasantos_20240002408.pdf" "joaoluisalmeidasantos_20240002408" 1762664967.75458 0
+["pdflatex"] 1762665234.55651 "Relatório/joaoluisalmeidasantos_20240002408.tex" "Relatório/joaoluisalmeidasantos_20240002408.pdf" "joaoluisalmeidasantos_20240002408" 1762665236.35786 0
   "/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1755987285 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/share/texmf-dist/fonts/enc/dvips/inter/a_qkv7gm.enc" 1755987285 2957 38eb22916327c7e6c0fd91a414cb016c ""
   "/usr/share/texmf-dist/fonts/enc/dvips/inter/a_y3ib6m.enc" 1755987285 3277 58c59591ecf3b4a625ced3949e3a8ee7 ""
@@ -92,8 +92,8 @@
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1762660397 5348269 2573a1a4fd61f7fbca307903e427192d ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1762660781 2041310 5a23ec5c9317edff6a2c40ebb86e4c98 ""
   "Relatório/Imagens/tabuleirojoga4setas.png" 1762663246.59658 411512 2db20a3d092bdd80dadc9c506c1719c6 ""
-  "Relatório/joaoluisalmeidasantos_20240002408.aux" 1762664967.56346 1240 fc56fda4b95d9becaaf353b2a5ee984e "pdflatex"
-  "Relatório/joaoluisalmeidasantos_20240002408.tex" 1762664957.34236 6333 e23c3543abc78a52268993005071f4f6 ""
+  "Relatório/joaoluisalmeidasantos_20240002408.aux" 1762665236.14594 1240 fc56fda4b95d9becaaf353b2a5ee984e "pdflatex"
+  "Relatório/joaoluisalmeidasantos_20240002408.tex" 1762665030.51004 6287 79882f459b76143b5092726c30d8422c ""
   (generated)
   "Relatório/joaoluisalmeidasantos_20240002408.aux"
   "Relatório/joaoluisalmeidasantos_20240002408.log"

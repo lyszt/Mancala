@@ -9,6 +9,8 @@ build: compose
 	@mkdir -p Relatório
 	- latexmk -pdf -outdir=Relatório Relatório/joaoluisalmeidasantos_20240002408.tex || true
 	mv Relatório/joaoluisalmeidasantos_20240002408.pdf build/joaoluisalmeidasantos_20240002408.pdf
+	zip build.zip build
+	mv build.zip joaoluisalmeidasantos_20240002408.zip
 compose:
 	@mkdir -p "Relatório"
 	@python3 -m venv .venv || true
