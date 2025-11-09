@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2026/dev/Arch Linux) (preloaded format=pdflatex 2025.11.9)  9 NOV 2025 01:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2026/dev/Arch Linux) (preloaded format=pdflatex 2025.11.9)  9 NOV 2025 02:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -827,47 +827,47 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \c@listing=\count305
 )
 LaTeX Font Info:    Trying to load font information for T1+Inter-LF on input li
-ne 38.
+ne 40.
 
 (/usr/share/texmf-dist/tex/latex/inter/T1Inter-LF.fd
 File: T1Inter-LF.fd 2023/11/24 (autoinst) Font definitions for T1/Inter-LF.
 )
 LaTeX Font Info:    Font shape `T1/Inter-LF/m/n' will be
-(Font)              scaled to size 10.0pt on input line 38.
+(Font)              scaled to size 10.0pt on input line 40.
 
 (Relatório/joaoluisalmeidasantos_20240002408.aux)
 \openout1 = `joaoluisalmeidasantos_20240002408.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for LGR/cmr/m/n on input line 38.
-LaTeX Font Info:    Trying to load font information for LGR+cmr on input line 3
-8.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for LGR/cmr/m/n on input line 40.
+LaTeX Font Info:    Trying to load font information for LGR+cmr on input line 4
+0.
 
 (/usr/share/texmf-dist/tex/latex/cbfonts-fd/lgrcmr.fd
 File: lgrcmr.fd 2017/07/29 v1.2 Greek European Computer Regular
 )
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for LY1/ptm/m/n on input line 38.
-LaTeX Font Info:    Trying to load font information for LY1+ptm on input line 3
-8.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for LY1/ptm/m/n on input line 40.
+LaTeX Font Info:    Trying to load font information for LY1+ptm on input line 4
+0.
 
 (/usr/share/texmf-dist/tex/latex/ly1/ly1ptm.fd
 File: ly1ptm.fd 2001/02/01 font definitions for LY1/ptm using Berry names.
 )
-LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    ... okay on input line 40.
 \c@mv@tabular=\count306
 \c@mv@boldtabular=\count307
 
@@ -894,7 +894,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 LaTeX Font Info:    Font shape `T1/Inter-LF/b/n' will be
-(Font)              scaled to size 10.0pt on input line 41.
+(Font)              scaled to size 10.0pt on input line 44.
 
 
 [1
@@ -902,93 +902,77 @@ LaTeX Font Info:    Font shape `T1/Inter-LF/b/n' will be
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf-dist/fonts
 /enc/dvips/inter/a_qkv7gm.enc}]
 LaTeX Font Info:    Font shape `T1/Inter-LF/m/n' will be
-(Font)              scaled to size 14.4pt on input line 46.
+(Font)              scaled to size 14.4pt on input line 49.
 LaTeX Font Info:    Font shape `T1/Inter-LF/b/n' will be
-(Font)              scaled to size 14.4pt on input line 46.
-<Imagens/tabuleiro3dblender.png, id=8, 1927.2pt x 1084.05pt>
-File: Imagens/tabuleiro3dblender.png Graphic file (type png)
-<use Imagens/tabuleiro3dblender.png>
-Package pdftex.def Info: Imagens/tabuleiro3dblender.png  used on input line 52.
-
-(pdftex.def)             Requested size: 345.0pt x 194.06194pt.
-LaTeX Font Info:    Font shape `T1/Inter-LF/m/n' will be
-(Font)              scaled to size 12.0pt on input line 58.
-LaTeX Font Info:    Font shape `T1/Inter-LF/b/n' will be
-(Font)              scaled to size 12.0pt on input line 58.
-
-
-LaTeX Warning: Reference `fig:logica' on page 1 undefined on input line 64.
-
-
-
-[1 <Relatório/Imagens/tabuleiro3dblender.png>]
-<Imagens/tabuleirojoga4setas.png, id=14, 1445.4pt x 899.36pt>
+(Font)              scaled to size 14.4pt on input line 49.
+<Imagens/tabuleirojoga4setas.png, id=8, 1445.4pt x 1027.84pt>
 File: Imagens/tabuleirojoga4setas.png Graphic file (type png)
 <use Imagens/tabuleirojoga4setas.png>
-Package pdftex.def Info: Imagens/tabuleirojoga4setas.png  used on input line 76
+Package pdftex.def Info: Imagens/tabuleirojoga4setas.png  used on input line 55
 .
-(pdftex.def)             Requested size: 345.0pt x 214.65689pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-
-[2]
-\pydata@fh@_72DE804C0D073639FA55E6A832698A12.data.minted=\write4
-\openout4 = `_72DE804C0D073639FA55E6A832698A12.data.minted'.
-
-runsystem(latexminted config  --timestamp 20251109013848 72DE804C0D073639FA55E6
-A832698A12)...executed safely (allowed).
-
- (Relatório/_72DE804C0D073639FA55E6A832698A12.config.minted)
-runsystem(latexminted cleanconfig  --timestamp 20251109013848 72DE804C0D073639F
-A55E6A832698A12)...executed safely (allowed).
-
-
-(./Relatório/_minted/pastie.style.minted)
-(./Relatório/_minted/095EE6962A7D1A1DBAEEC81287A89E0B.highlight.minted
+(pdftex.def)             Requested size: 345.0pt x 245.32217pt.
 LaTeX Font Info:    Font shape `T1/Inter-LF/m/n' will be
-(Font)              scaled to size 9.0pt on input line 1.
-LaTeX Font Info:    Font shape `T1/Inter-LF/m/n' will be
-(Font)              scaled to size 5.0pt on input line 2.
-LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <9> not available
-(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 3.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 6.
+(Font)              scaled to size 12.0pt on input line 62.
+LaTeX Font Info:    Font shape `T1/Inter-LF/b/n' will be
+(Font)              scaled to size 12.0pt on input line 62.
 
 
-[3{/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc} <Relatório/
-Imagens/tabuleirojoga4setas.png>])
+[1{/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc} <Relatório/
+Imagens/tabuleirojoga4setas.png>]
+LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <10> not available
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 80.
+LaTeX Font Info:    Trying to load font information for TS1+Inter-LF on input l
+ine 89.
 
-[4] (Relatório/joaoluisalmeidasantos_20240002408.aux)
+(/usr/share/texmf-dist/tex/latex/inter/TS1Inter-LF.fd
+File: TS1Inter-LF.fd 2023/11/24 (autoinst) Font definitions for TS1/Inter-LF.
+)
+LaTeX Font Info:    Font shape `TS1/Inter-LF/m/n' will be
+(Font)              scaled to size 10.0pt on input line 89.
+
+
+[2{/usr/share/texmf-dist/fonts/enc/dvips/inter/a_y3ib6m.enc}]
+Overfull \hbox (0.79031pt too wide) in paragraph at lines 95--96
+[]\T1/cmtt/m/n/10 carrega_cavidade\T1/Inter-LF/m/n/10 , \T1/cmtt/m/n/10 armazen
+a_cavidade\T1/Inter-LF/m/n/10 , \T1/cmtt/m/n/10 adiciona_na_cavidade \T1/Inter-
+LF/m/n/10 ^^V ma-
+ []
+
+
+Overfull \hbox (0.24452pt too wide) in paragraph at lines 98--99
+[]\T1/cmtt/m/n/10 print\T1/Inter-LF/m/n/10 , \T1/cmtt/m/n/10 print_one_string\T
+1/Inter-LF/m/n/10 , \T1/cmtt/m/n/10 print_integer \T1/Inter-LF/m/n/10 ^^V fun-�
+�es ge-n�-ri-cas de sa-
+ []
+
+
+
+[3]
+runsystem(latexminted cleantemp  --timestamp 20251109020926 72DE804C0D073639FA5
+5E6A832698A12)...executed safely (allowed).
+
+ (Relatório/joaoluisalmeidasantos_20240002408.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
-
-
-LaTeX Warning: There were undefined references.
-
  ) 
 Here is how much of TeX's memory you used:
- 11511 strings out of 475078
- 245394 string characters out of 5764916
- 737294 words of memory out of 5000000
- 34351 multiletter control sequences out of 15000+600000
- 633771 words of font info for 53 fonts, out of 8000000 for 9000
+ 11318 strings out of 475078
+ 241058 string characters out of 5764916
+ 728755 words of memory out of 5000000
+ 34167 multiletter control sequences out of 15000+600000
+ 616423 words of font info for 50 fonts, out of 8000000 for 9000
  61 hyphenation exceptions out of 8191
- 79i,12n,93p,558b,877s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 79i,11n,93p,615b,344s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf-dist/fonts/type1/public/inter/Inter-Bold.pfb></usr/share/te
 xmf-dist/fonts/type1/public/inter/Inter-Regular.pfb></usr/share/texmf-dist/font
-s/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmsy5.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfit09
-00.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sftt0900.pfb>
-Output written on Relatório/joaoluisalmeidasantos_20240002408.pdf (5 pages, 16
-50856 bytes).
+s/type1/public/cm-super/sftt1000.pfb>
+Output written on Relatório/joaoluisalmeidasantos_20240002408.pdf (4 pages, 62
+9259 bytes).
 PDF statistics:
- 57 PDF objects out of 1000 (max. 8388607)
- 33 compressed objects within 1 object stream
+ 41 PDF objects out of 1000 (max. 8388607)
+ 25 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 6 words of extra memory for PDF output out of 10000 (max. 10000000)
 

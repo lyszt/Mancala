@@ -8,7 +8,9 @@
 \usepackage{fancyhdr}
 \usepackage[utf8]{inputenc}
 \usepackage[portuguese]{babel}
-\renewcommand{\baselinestretch}{1.5} 
+\renewcommand{\baselinestretch}{1.0}
+\setlength{\parskip}{0pt} 
+\setlength{\parindent}{1em}
 \fancyhf{} 
 \renewcommand{\headrulewidth}{0pt} 
 \rfoot{\thepage}
@@ -38,7 +40,8 @@
 \begin{document}
 
 \begin{titlepage}
-    \textbf{Integrante:}\\
+    \textbf{Trabalho de Organização de Computadores 
+    \\ Integrante:}\\
     João Luís Almeida Santos -- 20240002408
     \vfill
 \end{titlepage}
@@ -54,15 +57,48 @@ Este relatório descreve o desenvolvimento de uma implementação do jogo Mancal
 	\label{fig:inicializacao}
 \end{figure}
 
+Este relatório descreve o desenvolvimento de uma implementação do jogo Mancala em Assembly RISC-V, executada no simulador RARS, como parte das atividades da disciplina de Organização de Computadores. A proposta do trabalho foi de simular o jogo de tabuleiro Mancala em formato de terminal.
 
-\subsection{Demanda do Trabalho}
-O enunciado disponibilizado exige uma versão do Mancala com doze cavidades e dois poços, quatro sementes por casa no estado inicial, suporte a turnos extras, captura de sementes e detecção do fim de jogo. Dentro do código, procurei modularizar e abstrair o máximo da lógica, dado o uso de funções de Macro e a criação de funções que vaziam processos simples, como printar, printar em loop, ler inteiro, etc. 
+\subsection{Inicialização e Estrutura de Dados}
 
-\section{Explicação do Código}
+Os primeiros passos do programa são dados na seção \texttt{.data}. Lá, são declaradas as variáveis, textos necessários para as funções de print, a vitória do jogador, o turno atual, etc. Além disso, todas as cavidades são inicializadas com o valor de 0, e a variável \textbf{SEED\_INIT} é criada com o valor 4. Esta variável pode ser alterada para mudar a funcionalidade do jogo.  
+Cada mensagem para o usuário/jogador foi colocada em asciz. Com essas linhas especificamente foi possível criar o formato formatado do tabuleiro.  
+Vale mencionar que em vários pontos, eu coloquei esses textos dentro de rótulos no .text, onde poderiam ser acessados pela função \textbf{print} para printar valores como se fosse em um for loop. Isso me permitiu diminuir o tamanho do arquivo no geral. O código no total deu 847 linhas, contando os comentários.
 
-O programa inicia na seção .data, onde são declaradas as variáveis, textos para exibição, estado do jogo e a constante SEED_INIT = 4, que define o valor inicial das cavidades e pode ser alterada para modificar o comportamento do jogo. As mensagens ao jogador foram definidas com asciz, permitindo formatar o tabuleiro. Em alguns casos, esses textos foram movidos para rótulos no .text, acessados pela função print, o que reduziu o tamanho total do código (847 linhas, incluindo comentários).
+\subsection{Função de Inicialização do Tabuleiro}
 
-A primeira função chamada no main é a de inicialização do tabuleiro. Ela recebe o valor inicial em a0 (mesmo havendo SEED_INIT) para maior flexibilidade na lógica do jogo. O valor é salvo em s0, e o loop é configurado com li s2, 5, para preencher apenas as cavidades válidas. Dentro do loop, a função auxiliar armazena_cavidade grava os valores nas posições corretas, simplificando o acesso aos endereços de memória. Esse processo é ilustrado na figura \ref{fig:inicializacao}.
+A primeira função a ser chamada dentro do main é a de inicialização de tabuleiro. Ela é essencial para colocar os valores necessários dentro das cavidades para que o jogo efetivamente se inicie.  
+Dentro dessa função, recebemos o número desejado em a0. Isso acontece apesar da existência do SEED\_INIT. Significa que a função não lê diretamente o SEED\_INIT. Ela recebe-o no início. Acredito que isso seja mais eficaz para caso queiramos mudar a lógica do tabuleiro de alguma forma.
 
+\subsection{Lógica do Loop e Armazenamento}
+
+De todo modo, a função prossegue. Ao receber o valor em a0, ela salva o valor em s0 para não perder em futuras chamadas de funções. Logo após, em \textbf{li s2, 5}, decidimos onde o loop vai parar enquanto estiver enchendo as cavidades. Não podemos chegar em 6 pois aí se localiza a cavidade de um dos jogadores.  
+Iniciamos o Loop. Enquanto i não for igual a 5, continuamos. Chamamos a função auxiliar \textbf{armazena\_cavidade} para armazenar o valor no endereço i. A função de armazenar cavidade foi útil para evitar ter que ficar repetindo endereço inicial + i * 4 para acessar endereços toda hora. Todo esse processo é demonstrado pela figura \ref{fig:inicializacao}.
+
+\subsection{Uso da Memória}
+
+A memória foi dividida em duas seções principais. A \textbf{seção \texttt{.data}} contém variáveis globais, textos e vetores necessários para o jogo. A \textbf{seção \texttt{.text}} contém as funções principais e auxiliares. O código começa em \texttt{main}, inicializa o tabuleiro e executa o loop principal do jogo até o fim da partida.
+
+\subsection{Uso dos Registradores}
+
+Os registradores temporários (\texttt{t0–t6}) são usados para cálculos e comparações momentâneas. Os registradores salvos (\texttt{s0–s2}) armazenam valores persistentes entre chamadas de funções (ex.: valor inicial de sementes, contadores de loop). Os registradores de argumentos (\texttt{a0–a7}) seguem convenção padrão de chamadas. O registrador \texttt{sp} (stack pointer) é usado com as macros \texttt{startF} e \texttt{endF}, que salvam e restauram \texttt{ra}, \texttt{s0–s2}, 
+e foram essenciais para o uso de funções.
+
+
+\subsection{Funções Implementadas}
+\begin{itemize}
+    \item \texttt{main} — controla o fluxo principal do jogo, alternando entre os jogadores.
+    \item \texttt{inicializar\_tabuleiro} — preenche as cavidades com o valor de \texttt{SEED\_INIT}.
+    \item \texttt{mostra\_tabuleiro} — imprime o estado atual do tabuleiro.
+    \item \texttt{player\_one\_turn} / \texttt{player\_two\_turn} — controlam as jogadas, incluindo roubo e turno extra.
+    \item \texttt{distribute\_pellets} — distribui as sementes a partir da cavidade escolhida.
+    \item \texttt{valida\_escolha} — garante que a cavidade selecionada é válida.
+    \item \texttt{carrega\_cavidade}, \texttt{armazena\_cavidade}, \texttt{adiciona\_na\_cavidade} — manipulam valores no vetor \texttt{cavidades}.
+    \item \texttt{soma\_valores\_j1/j2} — somam o total de sementes de cada lado.
+    \item \texttt{incrementa\_vitoria\_j1/j2} — atualizam o placar.
+    \item \texttt{print}, \texttt{print\_one\_string}, \texttt{print\_integer} — funções genéricas de saída via \texttt{ecall}.
+    \item \texttt{read\_integer} — leitura numérica do usuário.
+    \item \texttt{verifica\_vencedor} / \texttt{compara\_valores} — determinam o resultado final da partida.
+\end{itemize}
 
 \end{document}
